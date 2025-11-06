@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login • Qmovi</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <!-- Gradiente e ondas no fundo -->
+    <div class="background">
+      <svg class="waves" viewBox="0 0 1440 1024" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="grad-blue" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="var(--brand-blue)"/>
+            <stop offset="100%" stop-color="var(--brand-deep)"/>
+          </linearGradient>
+          <linearGradient id="grad-orange-strong" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--brand-orange)" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="var(--brand-orange)" stop-opacity="0.55"/>
+          </linearGradient>
+          <linearGradient id="grad-white" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+          </linearGradient>
+        </defs>
+        <!-- Fundo azul -->
+        <rect width="1440" height="1024" fill="url(#grad-blue)"/>
+        <!-- Ondas laranja (topo e base) cobrindo toda a tela -->
+        <path d="M0,120 C240,80 380,180 650,130 C920,80 1100,170 1440,100 L1440,0 L0,0 Z" fill="url(#grad-orange-strong)" opacity="0.95"/>
+        <path d="M0,310 C180,260 380,340 640,300 C940,250 1110,360 1440,290 L1440,0 L0,0 Z" fill="url(#grad-white)" opacity="0.45"/>
+
+        <path d="M0,740 C260,690 420,800 680,760 C980,710 1140,840 1440,780 L1440,1024 L0,1024 Z" fill="url(#grad-orange-strong)" opacity="0.85"/>
+        <path d="M0,870 C210,820 430,900 700,870 C990,830 1160,930 1440,890 L1440,1024 L0,1024 Z" fill="url(#grad-white)" opacity="0.35"/>
+
+        <!-- camada sutil no meio para ocupar toda a área -->
+        <path d="M0,520 C200,480 380,560 640,530 C920,500 1120,610 1440,540 L1440,600 L0,600 Z" fill="url(#grad-white)" opacity="0.18"/>
+      </svg>
+    </div>
+
+
+    <main class="wrapper">
+      <section class="card" role="form" aria-labelledby="card-title">
+        <header class="brand">
+          <img src="img/qLaranjaMoviAzul.png" alt="Logo Qmovi" class="logo" />
+          <h1 id="card-title" class="sr-only">Entrar no sistema</h1>
+        </header>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="usuario">Usuário</label>
+            <input id="usuario" name="usuario" type="text" inputmode="text" autocomplete="username"
+                   placeholder="seu.usuario" required aria-required="true">
+            <p class="hint">Use seu nome de usuário corporativo.</p>
+          </div>
+
+          <div class="field">
+            <label for="senha">Senha</label>
+            <div class="password-wrap">
+              <input id="senha" name="senha" type="password" autocomplete="current-password"
+                     placeholder="••••••••" required aria-required="true">
+              <button type="button" class="ghost-icon" aria-label="Mostrar ou ocultar senha" id="togglePassword">
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary" id="btnEntrar">Entrar</button>
+            <a class="btn-link" href="recuperar.html" id="forgot">Esqueci minha senha</a>
+          </div>
+        </form>
+
+        <footer class="footnote" aria-live="polite" id="feedback" role="status"></footer>
+      </section>
+
+      <p class="legal">© <span id="year"></span> Qmovi — Todos os direitos reservados.</p>
+    </main>
+
+    <script src="js/login.js"></script>
+  </body>
+</html>

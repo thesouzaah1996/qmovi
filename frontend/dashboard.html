@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Qmovi • Dashboard</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="js/dashboard.js"></script>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar" aria-label="Barra superior">
+    <div class="container topbar-inner">
+      <a class="brand" href="#" aria-label="Início Qmovi">
+        <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi" />
+      </a>
+
+      <div class="user-area">
+        <button class="avatar-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu">
+          <img class="avatar" src="img/user-icon.png" alt="Usuário" />
+        </button>
+        <nav class="dropdown" id="userMenu" role="menu" aria-labelledby="userBtn">
+          <a class="menu-item" href="#perfil" role="menuitem"><i data-lucide="user-cog"></i><span>Editar perfil</span></a>
+          <div class="menu-sep" role="separator"></div>
+          <a class="menu-item" href="#logout" role="menuitem" id="logoutBtn"><i data-lucide="log-out"></i><span>Sair</span></a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container grid" aria-label="Lista de módulos">
+      <a class="module" href="#almoxarifado" data-module="almoxarifado">
+        <div class="ico"><i data-lucide="box"></i></div>
+        <h3>Almoxarifado</h3>
+        <p>Materiais, estoque, endereçamento</p>
+      </a>
+
+      <a class="module" href="#portaria" data-module="portaria">
+        <div class="ico"><i data-lucide="key"></i></div>
+        <h3>Portaria</h3>
+        <p>Entrada/saída, visitantes e cargas</p>
+      </a>
+
+      <a class="module" href="#manutencao" data-module="manutencao">
+        <div class="ico"><i data-lucide="settings"></i></div>
+        <h3>Manutenção</h3>
+        <p>OS corretiva e preventiva</p>
+      </a>
+
+      <a class="module" href="#pcp" data-module="pcp">
+        <div class="ico"><i data-lucide="pie-chart"></i></div>
+        <h3>PCP</h3>
+        <p>Planejamento e controle da produção</p>
+      </a>
+
+      <a class="module" href="#assistencia" data-module="assistencia">
+        <div class="ico"><i data-lucide="clipboard-check"></i></div>
+        <h3>Assistência Técnica</h3>
+        <p>Chamados, diagnósticos e SLA</p>
+      </a>
+
+      <a class="module" href="#compras" data-module="compras">
+        <div class="ico"><i data-lucide="shopping-cart"></i></div>
+        <h3>Compras</h3>
+        <p>Requisições e pedidos a fornecedores</p>
+      </a>
+
+      <a class="module" href="#rh" data-module="rh">
+        <div class="ico"><i data-lucide="users"></i></div>
+        <h3>Recursos Humanos</h3>
+        <p>Pessoas, cargos e ponto</p>
+      </a>
+
+      <a class="module" href="#financeiro" data-module="financeiro">
+        <div class="ico"><i data-lucide="dollar-sign"></i></div>
+        <h3>Financeiro</h3>
+        <p>Contas, centros de custo e DRE</p>
+      </a>
+
+      <a class="module" href="#carregamento" data-module="carregamento">
+        <div class="ico"><i data-lucide="truck"></i></div>
+        <h3>Carregamento</h3>
+        <p>Expedição, romaneio e roteirização</p>
+      </a>
+    </section>
+  </main>
+
+  <!-- Footer no chão -->
+  <footer class="footer">
+    © <span id="year"></span> Qmovi — Todos os direitos reservados.
+  </footer>
+</body>
+</html>
