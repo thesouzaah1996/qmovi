@@ -10,6 +10,8 @@
 
   btn.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
   document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !btn.contains(e.target)) close(); });
+
+  // Esc fecha o menu; (outro handler abaixo fecha modais também)
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 
   menu.addEventListener('click', (e) => {
@@ -51,7 +53,7 @@ const dlgRemover    = document.getElementById('modalRemover');
 const formRemover   = document.getElementById('formRemover');
 const removeResumo  = document.getElementById('removeResumo');
 
-/* === Baixa de estoque (ID + quantidade) === */
+/* === Baixa de estoque (por ID) === */
 const btnBaixa         = document.getElementById('btnBaixa');
 const dlgBaixa         = document.getElementById('modalBaixa');
 const formBaixa        = document.getElementById('formBaixa');
@@ -66,27 +68,31 @@ function renderRows(items) {
     return;
   }
   listCount.textContent = `${items.length} itens`;
-  gridBody.innerHTML = items.map(p => `
-    <tr data-id="${p.id}">
-      <td>${p.id}</td>
-      <td>${p.name}</td>
-      <td>${p.unit}</td>
-      <td>${p.stock}</td>
-      <td>${p.location}</td>
-      <td>${p.min}</td>
-      <td>
-        <div class="row-actions">
-          <button type="button" class="btn tiny secondary js-edit" data-id="${p.id}">Editar</button>
-          <button type="button" class="btn tiny danger js-remove" data-id="${p.id}">Remover</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+  gridBody.innerHTML = items.map(p => {
+    const abaixoMin = Number(p.stock) < Number(p.min);
+    const stockCell = `${p.stock}${abaixoMin ? ' <span class="badge low" title="Abaixo do mínimo">Abaixo</span>' : ''}`;
+    return `
+      <tr data-id="${p.id}">
+        <td>${p.id}</td>
+        <td>${p.name}</td>
+        <td>${p.unit}</td>
+        <td>${stockCell}</td>
+        <td>${p.location}</td>
+        <td>${p.min}</td>
+        <td>
+          <div class="row-actions">
+            <button type="button" class="btn tiny secondary js-edit" data-id="${p.id}">Editar</button>
+            <button type="button" class="btn tiny danger js-remove" data-id="${p.id}">Remover</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 /* ========= HELPERS ========= */
 function openNewModal() {
-  tituloProd.textContent = 'Novo produto';
+  tituloProd.textContent = 'Novo Produto';
   [fId,fSku,fName,fCategory,fStock,fLocation,fMin].forEach(el => el.value = '');
   fUnit.value = 'un';
   dlgProduto.showModal();
@@ -94,7 +100,7 @@ function openNewModal() {
 function openEditModal(id) {
   const p = MOCK_PRODUCTS.find(i => String(i.id) === String(id));
   if (!p) return;
-  tituloProd.textContent = `Editar produto #${p.id}`;
+  tituloProd.textContent = `Editar Produto #${p.id}`;
   fId.value = p.id; fSku.value = p.sku; fName.value = p.name;
   fCategory.value = p.category ?? ''; fUnit.value = p.unit ?? 'un';
   fStock.value = p.stock ?? ''; fLocation.value = p.location ?? '';
@@ -107,8 +113,6 @@ function openRemoveModal(id) {
   removeResumo.innerHTML = `Você está prestes a remover <strong>${p.name}</strong> (SKU ${p.sku}).`;
   dlgRemover.showModal();
 }
-
-/* === Baixa de estoque (por ID) === */
 function openBaixaModal() {
   if (!dlgBaixa) return;
   if (produtoId) produtoId.value = '';
@@ -122,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnNew?.addEventListener('click', openNewModal);
 
-  // Delegação para ações da tabela
   gridBody?.addEventListener('click', (e) => {
     const editBtn = e.target.closest('.js-edit');
     const delBtn  = e.target.closest('.js-remove');
@@ -130,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (delBtn)  openRemoveModal(delBtn.dataset.id);
   });
 
-  // Botões Cancelar → fecham o dialog pai
+  // Cancelar → fecha o dialog pai
   document.querySelectorAll('[data-cancel]').forEach(btn => {
     btn.addEventListener('click', () => {
       const dialog = btn.closest('dialog');
@@ -138,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Microfeedback de ação (sem persistir nada)
+  // Microfeedback: salvar/fechar (pré-visualização)
   formProduto?.addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = formProduto.querySelector('.btn');
@@ -148,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       btn.disabled = false;
       btn.textContent = original;
-      if (dlgProduto.open) dlgProduto.close();
+      dlgProduto.open && dlgProduto.close();
     }, 600);
   });
 
@@ -161,13 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       btn.disabled = false;
       btn.textContent = original;
-      if (dlgRemover.open) dlgRemover.close();
+      dlgRemover.open && dlgRemover.close();
     }, 600);
   });
 
-  // === Baixa de estoque: abrir modal + microfeedback (pré-visualização) ===
+  // Baixa de estoque (pré-visualização)
   btnBaixa?.addEventListener('click', openBaixaModal);
-
   formBaixa?.addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = formBaixa.querySelector('.btn');
@@ -177,12 +179,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       btn.disabled = false;
       btn.textContent = original;
-      if (dlgBaixa?.open) dlgBaixa.close();
+      dlgBaixa?.open && dlgBaixa.close();
     }, 700);
   });
 
-  // Demonstração: limpar sessão (sem efeito real)
   btnClearAll?.addEventListener('click', () => {
     console.log('Limpar sessão (pré-visualização).');
   });
+
+  /* ====== Footer: ano igual à dashboard ====== */
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+});
+
+/* ====== QoL extra: Esc fecha qualquer dialog aberto ====== */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('dialog[open]').forEach(d => d.close());
+  }
 });

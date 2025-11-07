@@ -54,6 +54,14 @@
   </header>
 
   <main class="wrap">
+    <!-- Breadcrumb minimalista -->
+    <nav class="crumbs" aria-label="Caminho">
+      <a href="dashboard.html" aria-current="page">Home</a>
+      <span aria-hidden="true">›</span>
+      <strong>Almoxarifado</strong>
+    </nav>
+
+    <!-- Toolbar -->
     <section class="toolbar" aria-label="Ferramentas de listagem">
       <div class="filters">
         <label class="field" style="flex:1;min-width:260px">
@@ -61,12 +69,12 @@
             <circle cx="11" cy="11" r="7" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <input id="q" placeholder="Buscar por nome, SKU ou localização…" autocomplete="off" />
+          <input id="q" placeholder="Buscar por nome, ID..." autocomplete="off" />
         </label>
       </div>
       <div class="actions">
         <button class="btn" id="btnNew" type="button">+ Novo Produto</button>
-        <button class="btn secondary" id="btnBaixa" type="button">Baixa de estoque</button>
+        <button class="btn secondary" id="btnBaixa" type="button">Baixa de Estoque</button>
         <button class="btn secondary" id="btnExportCSV" type="button">Exportar CSV</button>
         <button class="btn secondary" id="btnPrint" type="button">Imprimir / PDF</button>
       </div>
@@ -79,7 +87,7 @@
         <small id="listCount">0 itens</small>
       </header>
       <div class="table-wrap">
-        <table class="table" id="grid">
+        <table class="table" id="grid" aria-label="Tabela de produtos">
           <thead>
             <tr>
               <th>ID</th>
@@ -91,19 +99,24 @@
               <th style="width:180px">Ações</th>
             </tr>
           </thead>
-          <tbody id="gridBody"><!-- dados entram via JS --></tbody>
+          <tbody id="gridBody"><!-- dados via JS --></tbody>
         </table>
       </div>
       <footer class="card-foot">
-        <button class="btn tiny secondary" id="btnClearAll" type="button" title="Limpa tudo da sessão (não persiste)">Limpar sessão</button>
+        <button class="btn tiny secondary" id="btnClearAll" type="button" title="Limpa tudo da sessão (não persiste)">Limpar Sessão</button>
       </footer>
     </section>
   </main>
 
+  <!-- Footer idêntico ao da dashboard -->
+  <footer class="footer">
+    © <span id="year"></span> Qmovi — Todos os direitos reservados.
+  </footer>
+
   <!-- Modal: Novo/Editar Produto -->
   <dialog id="modalProduto" class="modal" aria-labelledby="produtoTitulo">
     <form id="formProduto" method="dialog">
-      <header><h3 id="produtoTitulo">Novo produto</h3></header>
+      <header><h3 id="produtoTitulo">Novo Produto</h3></header>
       <div class="grid">
         <input type="hidden" id="id" />
         <label class="field"><span>SKU</span><input id="sku" required maxlength="40" /></label>
@@ -131,7 +144,7 @@
   <!-- Modal: Remover Produto -->
   <dialog id="modalRemover" class="modal" aria-labelledby="removeTitulo">
     <form id="formRemover" method="dialog">
-      <header><h3 id="removeTitulo">Remover produto</h3></header>
+      <header><h3 id="removeTitulo">Remover Produto</h3></header>
       <div class="confirm">
         <p id="removeResumo">Você está prestes a remover este item.</p>
         <p class="muted">
@@ -140,28 +153,28 @@
         </p>
       </div>
       <footer>
-        <button class="btn danger" value="confirm" type="submit">Sim, remover (pré-visualização)</button>
+        <button class="btn danger" value="confirm" type="submit">Sim, Remover (pré-visualização)</button>
         <button class="btn secondary" data-cancel type="button">Cancelar</button>
       </footer>
     </form>
   </dialog>
 
-  <!-- Modal: Baixa de Estoque (ID + quantidade) -->
+  <!-- Modal: Baixa de Estoque (por ID) -->
   <dialog id="modalBaixa" class="modal" aria-labelledby="baixaTitulo">
     <form id="formBaixa" method="dialog">
-      <header><h3 id="baixaTitulo">Baixa de estoque</h3></header>
+      <header><h3 id="baixaTitulo">Baixa de Estoque</h3></header>
       <div class="grid">
         <label class="field">
-          <span>ID do produto</span>
+          <span>ID do Produto</span>
           <input id="produtoId" type="number" min="1" step="1" required placeholder="Ex.: 101" />
         </label>
         <label class="field">
-          <span>Quantidade a dar baixa</span>
+          <span>Quantidade a Dar Baixa</span>
           <input id="quantidadeBaixa" type="number" min="1" step="1" required placeholder="Ex.: 3" />
         </label>
       </div>
       <footer>
-        <button class="btn" type="submit">Confirmar baixa (pré-visualização)</button>
+        <button class="btn" type="submit">Confirmar Baixa (pré-visualização)</button>
         <button class="btn secondary" data-cancel type="button">Cancelar</button>
       </footer>
     </form>
