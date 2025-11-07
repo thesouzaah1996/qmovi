@@ -34,14 +34,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Placeholders de navegação (trocar por rotas reais depois)
-  document.querySelectorAll('.module').forEach(card => {
-    card.addEventListener('click', (e) => {
-      e.preventDefault();
-      const mod = card.getAttribute('data-module') || '';
-      alert('Abrir módulo: ' + mod.toUpperCase());
-    });
-  });
+  // // Placeholders de navegação (trocar por rotas reais depois)
+  // document.querySelectorAll('.module').forEach(card => {
+  //   card.addEventListener('click', (e) => {
+  //     e.preventDefault();
+  //     const mod = card.getAttribute('data-module') || '';
+  //     alert('Abrir módulo: ' + mod.toUpperCase());
+  //   });
+  // });
 
   // Logout simulado
   document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
