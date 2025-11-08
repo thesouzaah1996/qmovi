@@ -3,32 +3,28 @@
   --brand:#2563eb;--brand-700:#1d4ed8;--accent:#f97316;
   --ring:#c7d2fe;--danger:#dc2626;--radius:18px;
   --shadow:0 6px 24px rgba(2,6,23,.08);
-  --line:#e6eef7; /* p/ footer igual ao da dashboard */
+  --line:#e6eef7;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;
-  min-height:100vh;
-  display:flex; flex-direction:column; /* footer no chão */
+  margin:0; min-height:100vh; display:flex; flex-direction:column;
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-  background:#fff;
-  color:var(--ink)
+  background:#fff; color:var(--ink)
 }
-.topbar{
-  display:flex;align-items:center;gap:14px;
-  padding:18px 22px;border-bottom:1px solid #e2e8f0;background:#fff;position:sticky;top:0;z-index:10
-}
+
+/* topbar */
+.topbar{display:flex;align-items:center;gap:14px;
+  padding:18px 22px;border-bottom:1px solid #e2e8f0;background:#fff;position:sticky;top:0;z-index:10}
 .brand{display:flex;align-items:center;text-decoration:none}
 .logo{width:120px;height:auto;display:block;object-fit:contain}
 
-/* ====== MENU DO USUÁRIO ====== */
+/* user menu */
 .user-menu{margin-left:auto;position:relative}
 .avatar-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;cursor:pointer;box-shadow:0 1px 2px rgba(2,6,23,.04)}
 .avatar-btn:hover{background:#f8fafc}
 .avatar-btn:focus{outline:none;box-shadow:0 0 0 4px var(--ring)}
 .avatar-circle{display:grid;place-items:center;width:28px;height:28px;border-radius:999px;background:#111827;color:#fff}
-
 .menu{position:absolute;right:0;top:52px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 20px 40px rgba(2,6,23,.15);min-width:220px;padding:8px;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s ease, transform .15s ease}
 .menu.open{opacity:1;transform:translateY(0);pointer-events:auto}
 .menu-item{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600;color:#0f172a}
@@ -37,21 +33,43 @@ body{
 .menu-item.danger .ico{color:#f97316;background:#fff7ed}
 .menu-sep{height:1px;background:#e2e8f0;margin:6px 8px}
 
-/* ====== PÁGINA ====== */
-.wrap{max-width:1160px;margin:20px auto;padding:0 18px;flex:1} /* empurra o footer */
+/* layout */
+.wrap{max-width:1160px;margin:20px auto;padding:0 18px;flex:1}
 .crumbs{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12.5px;margin-bottom:10px}
 .crumbs a{color:var(--muted);text-decoration:none}
 .crumbs a:hover{text-decoration:underline}
-
 .toolbar{display:grid;grid-template-columns:1fr auto;gap:20px;margin-bottom:16px}
 .filters{display:flex;flex-wrap:wrap;gap:10px}
 .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
 
-.field{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;min-height:44px}
+.field{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid #e2e8f0;border-radius:12px;
+  padding:10px 12px;min-height:44px
+}
 .field input,.field select{border:none;outline:none;width:100%;font:inherit;color:inherit;background:transparent}
 .field:focus-within{box-shadow:0 0 0 4px var(--ring);border-color:#c7d2fe}
 
-/* ====== BOTÕES ====== */
+/* ====== SELECT BONITO (seta custom + hover/focus) ====== */
+.field select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  padding-right:38px;                 /* espaço para a seta */
+  cursor:pointer;
+  /* seta padrão */
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2364758b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  background-size:16px;
+}
+.field:hover select{ background-color:#f8fafc; }
+.field:focus-within select{
+  /* seta azul no foco */
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%231d4ed8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+}
+select::-ms-expand{display:none;}    /* remove seta do IE/Edge legado */
+.field select:disabled{color:#94a3b8; cursor:not-allowed}
+
+/* botões */
 .btn{
   appearance:none;border:none;background:var(--brand);color:#fff;padding:10px 14px;border-radius:12px;
   font-weight:700;cursor:pointer;box-shadow:var(--shadow);display:inline-flex;align-items:center;gap:8px;
@@ -59,12 +77,12 @@ body{
 }
 .btn:hover{background:var(--brand-700)}
 .btn:active{transform:scale(.98);box-shadow:0 2px 6px rgba(0,0,0,.15)}
-.btn.secondary{background:#fff;color:#1e293b;border:1px solid #cbd5e1;opacity:.95;transition:opacity .15s ease, background .15s ease}
+.btn.secondary{background:#fff;color:#1e293b;border:1px solid #cbd5e1;opacity:.95}
 .btn.secondary:hover{background:#f1f5f9;opacity:1}
 .btn.tiny{padding:8px 10px;font-weight:600}
 .btn.danger{background:var(--danger)}
 
-/* ====== TABELA ====== */
+/* card + tabela */
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:var(--radius);box-shadow:var(--shadow)}
 .card-head{display:flex;align-items:baseline;gap:10px;padding:16px 16px 10px;border-bottom:1px solid #eef2f7}
 .card-head h2{font-size:1.1rem;margin:0;font-weight:700}
@@ -76,48 +94,35 @@ body{
 .table tr:hover td{background:#fafafa}
 .table .row-actions{display:flex;gap:8px}
 .table .row-actions .btn{padding:6px 10px;font-weight:700}
-/* largura mínima p/ “Local” */
-.table th:nth-child(5), .table td:nth-child(5){min-width:110px}
 
+/* paginação (unificada) */
 .card-foot{padding:12px;border-top:1px solid #eef2f7;display:flex;justify-content:flex-end}
-
-/* ====== BADGES ====== */
-.badge{display:inline-block;font-size:11px;padding:4px 6px;border-radius:999px;border:1px solid #e2e8f0;color:#334155;background:#fff;margin-left:6px}
-.badge.low{border-color:#fecaca;background:#fee2e2;color:#991b1b}
-
-/* ====== MODAIS ====== */
-.modal{
-  border:none;border-radius:16px;padding:0;
-  box-shadow:0 20px 60px rgba(0,0,0,.25);
-  width:min(720px,92vw);
-  opacity:0; transform:translateY(8px) scale(.98);
-  transition:opacity .12s ease, transform .12s ease;
+.pager{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pager button{
+  border:1px solid #cbd5e1;background:#fff;border-radius:10px;
+  padding:8px 12px;font-weight:600;cursor:pointer;
 }
-.modal[open]{opacity:1; transform:translateY(0) scale(1)}
+.pager button:hover{background:#f1f5f9}
+.pager button[disabled]{opacity:.55;cursor:not-allowed}
+.pager .is-active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* modal */
+.modal{border:none;border-radius:16px;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.25);width:min(720px,92vw);opacity:0;transform:translateY(8px) scale(.98);transition:opacity .12s ease, transform .12s ease}
+.modal[open]{opacity:1;transform:translateY(0) scale(1)}
 .modal::backdrop{background:rgba(15,23,42,.55)}
 .modal form{padding:18px 20px;background:#fff}
 .modal header{padding:6px 2px 14px;border-bottom:1px solid #eef2f7}
 .modal h3{margin:0;font-weight:700;font-size:1.05rem}
-.modal .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
-  gap:14px;
-  padding:16px 0
-}
+.modal .grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px,1fr));gap:14px;padding:16px 0}
 .modal .grid .field{flex-direction:column;align-items:flex-start}
 .modal .grid .field span{font-weight:500;color:var(--muted)}
 .modal footer{display:flex;justify-content:flex-end;gap:12px;padding-top:16px;border-top:1px solid #eef2f7}
-.confirm{padding:16px 0}
-.muted{color:var(--muted)}
 
 #empty{padding:24px;color:var(--muted);text-align:center}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-/* ====== FOOTER (idêntico ao da dashboard) ====== */
-.footer{
-  border-top:1px solid var(--line);
-  padding:18px 0 28px;
-  color:#475569;
-  text-align:center;
-  margin-top:auto; /* cola no chão quando pouco conteúdo */
-}
+/* footer */
+.footer{border-top:1px solid var(--line);padding:18px 0 28px;color:#475569;text-align:center;margin-top:auto}
+
+/* utilitário de esconder */
+.is-hidden{display:none!important}

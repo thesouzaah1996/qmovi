@@ -1,4 +1,4 @@
-package com.qmovi.backend.model;
+package com.qmovi.almoxarifado.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

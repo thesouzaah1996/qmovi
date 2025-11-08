@@ -103,7 +103,8 @@
         </table>
       </div>
       <footer class="card-foot">
-        <button class="btn tiny secondary" id="btnClearAll" type="button" title="Limpa tudo da sessão (não persiste)">Limpar Sessão</button>
+        <!-- paginação -->
+        <nav id="pager" class="pager" aria-label="Paginação"></nav>
       </footer>
     </section>
   </main>
@@ -113,47 +114,52 @@
     © <span id="year"></span> Qmovi — Todos os direitos reservados.
   </footer>
 
-  <!-- Modal: Novo/Editar Produto -->
+  <!-- Modal: Novo Produto -->
   <dialog id="modalProduto" class="modal" aria-labelledby="produtoTitulo">
     <form id="formProduto" method="dialog">
       <header><h3 id="produtoTitulo">Novo Produto</h3></header>
       <div class="grid">
         <input type="hidden" id="id" />
-        <label class="field"><span>SKU</span><input id="sku" required maxlength="40" /></label>
         <label class="field"><span>Nome</span><input id="name" required maxlength="120" /></label>
-        <label class="field"><span>Categoria</span><input id="category" maxlength="60" /></label>
+
+        <!-- Setor (dropdown estilizado) -->
         <label class="field">
-          <span>Unidade</span>
-          <select id="unit">
-            <option value="un">un</option>
-            <option value="cx">cx</option>
-            <option value="kg">kg</option>
+          <span>Setor</span>
+          <select id="sector" required>
+            <option value="" disabled selected>Selecione o setor…</option>
+            <option value="Almoxarifado">Almoxarifado</option>
+            <option value="PCP">PCP</option>
+            <option value="Embalagem">Embalagem</option>
+            <option value="Expedição">Expedição</option>
+            <option value="Carregamento">Carregamento</option>
+            <option value="Administracao">Administração</option>
+            <option value="Manutenção">Manutenção</option>
+            <option value="Furadeira">Furadeira</option>
+            <option value="Usinagem">Usinagem</option>
+            <option value="Corte">Corte</option>
+            <option value="Borda">Borda</option>
+            <option value="Pintura">Pintura</option>
+            <option value="Outros">Outros</option>
           </select>
         </label>
+
+        <label class="field"><span>Categoria</span><input id="category" maxlength="60" /></label>
+
+        <!-- Unidade como texto -->
+        <label class="field"><span>Unidade</span><input id="unit" maxlength="10" placeholder="ex.: un, cx, kg" /></label>
+
         <label class="field"><span>Estoque</span><input id="stock" type="number" min="0" step="1" /></label>
         <label class="field"><span>Local</span><input id="location" maxlength="40" /></label>
         <label class="field"><span>Mínimo</span><input id="min" type="number" min="0" step="1" /></label>
-      </div>
-      <footer>
-        <button class="btn" value="confirm" type="submit">Salvar (pré-visualização)</button>
-        <button class="btn secondary" data-cancel type="button">Cancelar</button>
-      </footer>
-    </form>
-  </dialog>
 
-  <!-- Modal: Remover Produto -->
-  <dialog id="modalRemover" class="modal" aria-labelledby="removeTitulo">
-    <form id="formRemover" method="dialog">
-      <header><h3 id="removeTitulo">Remover Produto</h3></header>
-      <div class="confirm">
-        <p id="removeResumo">Você está prestes a remover este item.</p>
-        <p class="muted">
-          Esta ação removerá o produto desta sessão e
-          <strong>não poderá ser desfeita</strong>. Tem certeza de que deseja continuar?
-        </p>
+        <!-- Nº Nota Fiscal -->
+        <label class="field"><span>Nº Nota Fiscal</span><input id="nfeNumber" maxlength="40" placeholder="Ex.: 12345-1" /></label>
+
+        <!-- Conferente responsável -->
+        <label class="field"><span>Conferente</span><input id="checker" maxlength="60" placeholder="Nome do conferente" /></label>
       </div>
       <footer>
-        <button class="btn danger" value="confirm" type="submit">Sim, Remover (pré-visualização)</button>
+        <button class="btn" value="confirm" type="submit">Salvar</button>
         <button class="btn secondary" data-cancel type="button">Cancelar</button>
       </footer>
     </form>
@@ -168,13 +174,40 @@
           <span>ID do Produto</span>
           <input id="produtoId" type="number" min="1" step="1" required placeholder="Ex.: 101" />
         </label>
+
         <label class="field">
           <span>Quantidade a Dar Baixa</span>
           <input id="quantidadeBaixa" type="number" min="1" step="1" required placeholder="Ex.: 3" />
         </label>
+
+        <!-- É para o setor subsequente? -->
+        <label class="field">
+          <span>Para setor responsável?</span>
+          <select id="subsequente" required>
+            <option value="" disabled selected>Selecione…</option>
+            <option value="SIM">Sim</option>
+            <option value="NAO">Não</option>
+          </select>
+        </label>
+
+        <!-- Só aparece se subsequente=NAO -->
+        <label class="field is-hidden" id="wrapAutGestor">
+          <span>Autorizado?</span>
+          <select id="autGestor">
+            <option value="" disabled selected>Selecione…</option>
+            <option value="SIM">Sim</option>
+            <option value="NAO">Não</option>
+          </select>
+        </label>
+
+        <!-- Conferente responsável -->
+        <label class="field">
+          <span>Conferente</span>
+          <input id="checkerBaixa" maxlength="60" placeholder="Nome do conferente" />
+        </label>
       </div>
       <footer>
-        <button class="btn" type="submit">Confirmar Baixa (pré-visualização)</button>
+        <button class="btn" type="submit">Confirmar Baixa</button>
         <button class="btn secondary" data-cancel type="button">Cancelar</button>
       </footer>
     </form>

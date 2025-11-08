@@ -1,3 +1,22 @@
+/* ========= CONFIG API =========
+   Ajuste BASE/BAIXA_BASE para casar com seu back (ex.: Spring Boot) */
+const API = {
+  BASE: '/api/produtos',             // GET ?page=0&size=10&q=..., POST body JSON
+  BAIXA_BASE: '/api/produtos',       // POST /{id}/baixa
+  PAGE_PARAM: 'page',
+  SIZE_PARAM: 'size',
+  SEARCH_PARAM: 'q',
+};
+
+const state = {
+  page: 0,
+  size: 10,
+  totalPages: 0,
+  totalElements: 0,
+  q: '',
+  loading: false,
+};
+
 /* ========= MENU DO USUÁRIO ========= */
 (() => {
   const btn = document.getElementById('avatarBtn');
@@ -10,8 +29,6 @@
 
   btn.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
   document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !btn.contains(e.target)) close(); });
-
-  // Esc fecha o menu; (outro handler abaixo fecha modais também)
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 
   menu.addEventListener('click', (e) => {
@@ -23,66 +40,121 @@
   });
 })();
 
-/* ========= MOCK: DADOS CHUMBADOS ========= */
-const MOCK_PRODUCTS = [
-  { id: 101, sku: 'PLT-AB123', name: 'Pé de mesa aço 70cm', category: 'Ferragens', unit: 'un', stock: 36, location: 'A-01-03', min: 10 },
-  { id: 102, sku: 'MDP-18BR',  name: 'Chapa MDP 18mm Branca', category: 'Madeiras',  unit: 'cx', stock: 8,  location: 'B-02-01', min: 6  },
-  { id: 103, sku: 'PAR-8X40',  name: 'Parafuso 8x40 zincado', category: 'Parafusos', unit: 'kg', stock: 12, location: 'C-05-02', min: 5  }
-];
-
 /* ========= ELEMENTOS ========= */
-const gridBody      = document.getElementById('gridBody');
-const listCount     = document.getElementById('listCount');
-const btnNew        = document.getElementById('btnNew');
-const btnClearAll   = document.getElementById('btnClearAll');
+const gridBody   = document.getElementById('gridBody');
+const listCount  = document.getElementById('listCount');
+const btnNew     = document.getElementById('btnNew');
+const btnBaixa   = document.getElementById('btnBaixa');
+const pagerEl    = document.getElementById('pager');
 
-const dlgProduto    = document.getElementById('modalProduto');
-const tituloProd    = document.getElementById('produtoTitulo');
-const formProduto   = document.getElementById('formProduto');
+const dlgProduto   = document.getElementById('modalProduto');
+const formProduto  = document.getElementById('formProduto');
+const fName        = document.getElementById('name');
+const fCategory    = document.getElementById('category');
+const fUnit        = document.getElementById('unit');
+const fStock       = document.getElementById('stock');
+const fLocation    = document.getElementById('location');
+const fMin         = document.getElementById('min');
+const fSector      = document.getElementById('sector');
+const fNfe         = document.getElementById('nfeNumber');
+const fChecker     = document.getElementById('checker');
 
-const fId       = document.getElementById('id');
-const fSku      = document.getElementById('sku');
-const fName     = document.getElementById('name');
-const fCategory = document.getElementById('category');
-const fUnit     = document.getElementById('unit');
-const fStock    = document.getElementById('stock');
-const fLocation = document.getElementById('location');
-const fMin      = document.getElementById('min');
+const dlgBaixa       = document.getElementById('modalBaixa');
+const formBaixa      = document.getElementById('formBaixa');
+const fProdutoId     = document.getElementById('produtoId');
+const fQtdBaixa      = document.getElementById('quantidadeBaixa');
+const fSubsequente   = document.getElementById('subsequente');
+const wrapAutGestor  = document.getElementById('wrapAutGestor');
+const fAutGestor     = document.getElementById('autGestor');
+const fCheckerBaixa  = document.getElementById('checkerBaixa');
 
-const dlgRemover    = document.getElementById('modalRemover');
-const formRemover   = document.getElementById('formRemover');
-const removeResumo  = document.getElementById('removeResumo');
+/* ========= HELPERS ========= */
+function normalizeResponse(data) {
+  // Aceita paginação Spring (content/totalPages/totalElements) ou array simples
+  const items = Array.isArray(data) ? data : (data?.content ?? data?.items ?? []);
+  state.totalPages = Number(data?.totalPages ?? 1);
+  state.totalElements = Number(data?.totalElements ?? items.length);
+  return items.map(p => ({
+    id: p.id ?? p.productId ?? null,
+    name: p.name ?? p.nome ?? '',
+    unit: (p.unit ?? p.unidade ?? ''),
+    stock: Number(p.stock ?? p.estoque ?? 0),
+    location: p.location ?? p.local ?? '',
+    min: Number(p.min ?? p.minimo ?? 0),
+    // campos extras opcionais vindos do back (não obrigatórios para render):
+    sector: p.sector ?? p.setor ?? '',
+    nfe: p.nfe ?? p.notaFiscal ?? p.numeroNotaFiscal ?? '',
+    checker: p.checker ?? p.conferente ?? '',
+  }));
+}
 
-/* === Baixa de estoque (por ID) === */
-const btnBaixa         = document.getElementById('btnBaixa');
-const dlgBaixa         = document.getElementById('modalBaixa');
-const formBaixa        = document.getElementById('formBaixa');
-const produtoId        = document.getElementById('produtoId');
-const quantidadeBaixa  = document.getElementById('quantidadeBaixa');
+function buildUrl() {
+  const u = new URL(API.BASE, window.location.origin);
+  u.searchParams.set(API.PAGE_PARAM, state.page);
+  u.searchParams.set(API.SIZE_PARAM, state.size);
+  if (state.q?.trim()) u.searchParams.set(API.SEARCH_PARAM, state.q.trim());
+  return u.toString();
+}
 
-/* ========= RENDER ========= */
-function renderRows(items) {
+function setLoading(isLoading) {
+  state.loading = isLoading;
+  if (isLoading) {
+    gridBody.innerHTML = `<tr><td id="empty" colspan="7">Carregando…</td></tr>`;
+  }
+}
+
+function renderPager() {
+  if (!pagerEl) return;
+  pagerEl.innerHTML = '';
+  const total = Math.max(1, state.totalPages || 1);
+
+  const btnPrev = document.createElement('button');
+  btnPrev.textContent = '‹ Anterior';
+  btnPrev.disabled = state.page <= 0;
+  btnPrev.onclick = () => { state.page = Math.max(0, state.page - 1); fetchAndRender(); };
+  pagerEl.appendChild(btnPrev);
+
+  const start = Math.max(0, state.page - 2);
+  const end = Math.min(total - 1, state.page + 2);
+  for (let i = start; i <= end; i++) {
+    const b = document.createElement('button');
+    b.textContent = String(i + 1);
+    if (i === state.page) b.classList.add('is-active');
+    b.onclick = () => { state.page = i; fetchAndRender(); };
+    pagerEl.appendChild(b);
+  }
+
+  const btnNext = document.createElement('button');
+  btnNext.textContent = 'Próxima ›';
+  btnNext.disabled = state.page >= total - 1;
+  btnNext.onclick = () => { state.page = Math.min(total - 1, state.page + 1); fetchAndRender(); };
+  pagerEl.appendChild(btnNext);
+}
+
+function renderRows(items, fromBackend) {
   if (!items?.length) {
-    gridBody.innerHTML = `<tr><td colspan="7" id="empty">Nenhum produto cadastrado nesta sessão.</td></tr>`;
+    gridBody.innerHTML = `<tr><td colspan="7" id="empty">Nenhum produto encontrado.</td></tr>`;
     listCount.textContent = '0 itens';
     return;
   }
-  listCount.textContent = `${items.length} itens`;
+  listCount.textContent = `${state.totalElements || items.length} itens`;
+
   gridBody.innerHTML = items.map(p => {
-    const abaixoMin = Number(p.stock) < Number(p.min);
-    const stockCell = `${p.stock}${abaixoMin ? ' <span class="badge low" title="Abaixo do mínimo">Abaixo</span>' : ''}`;
+    const canActions = fromBackend && p.id != null;
     return `
-      <tr data-id="${p.id}">
-        <td>${p.id}</td>
-        <td>${p.name}</td>
-        <td>${p.unit}</td>
-        <td>${stockCell}</td>
-        <td>${p.location}</td>
-        <td>${p.min}</td>
+      <tr data-id="${p.id ?? ''}">
+        <td>${p.id ?? '-'}</td>
+        <td>${(p.name ?? '').trim() || '-'}</td>
+        <td>${(p.unit ?? '').trim() || '-'}</td>
+        <td>${Number.isFinite(p.stock) ? p.stock : '-'}</td>
+        <td>${(p.location ?? '').trim() || '-'}</td>
+        <td>${Number.isFinite(p.min) ? p.min : '-'}</td>
         <td>
           <div class="row-actions">
-            <button type="button" class="btn tiny secondary js-edit" data-id="${p.id}">Editar</button>
-            <button type="button" class="btn tiny danger js-remove" data-id="${p.id}">Remover</button>
+            ${canActions ? `
+              <button type="button" class="btn tiny secondary js-edit" data-id="${p.id}">Editar</button>
+              <button type="button" class="btn tiny danger js-remove" data-id="${p.id}">Remover</button>
+            ` : `<span class="muted">—</span>`}
           </div>
         </td>
       </tr>
@@ -90,50 +162,96 @@ function renderRows(items) {
   }).join('');
 }
 
-/* ========= HELPERS ========= */
-function openNewModal() {
-  tituloProd.textContent = 'Novo Produto';
-  [fId,fSku,fName,fCategory,fStock,fLocation,fMin].forEach(el => el.value = '');
-  fUnit.value = 'un';
-  dlgProduto.showModal();
+/* ========= DATA FLOW ========= */
+async function fetchAndRender() {
+  try {
+    setLoading(true);
+    const res = await fetch(buildUrl(), { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error(`Falha ao carregar (${res.status})`);
+    const data = await res.json();
+    const items = normalizeResponse(data);
+    renderRows(items, true);
+    renderPager();
+  } catch (err) {
+    console.error(err);
+    gridBody.innerHTML = `<tr><td id="empty" colspan="7">Erro ao carregar dados.</td></tr>`;
+    listCount.textContent = '0 itens';
+    if (pagerEl) pagerEl.innerHTML = '';
+  } finally {
+    setLoading(false);
+  }
 }
-function openEditModal(id) {
-  const p = MOCK_PRODUCTS.find(i => String(i.id) === String(id));
-  if (!p) return;
-  tituloProd.textContent = `Editar Produto #${p.id}`;
-  fId.value = p.id; fSku.value = p.sku; fName.value = p.name;
-  fCategory.value = p.category ?? ''; fUnit.value = p.unit ?? 'un';
-  fStock.value = p.stock ?? ''; fLocation.value = p.location ?? '';
-  fMin.value = p.min ?? '';
-  dlgProduto.showModal();
+
+async function createProduct(payload) {
+  // POST /api/produtos
+  const res = await fetch(API.BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const txt = await res.text().catch(() => '');
+    throw new Error(txt || `Erro ao salvar (${res.status})`);
+  }
+  return res.json().catch(() => ({}));
 }
-function openRemoveModal(id) {
-  const p = MOCK_PRODUCTS.find(i => String(i.id) === String(id));
-  if (!p) return;
-  removeResumo.innerHTML = `Você está prestes a remover <strong>${p.name}</strong> (SKU ${p.sku}).`;
-  dlgRemover.showModal();
-}
-function openBaixaModal() {
-  if (!dlgBaixa) return;
-  if (produtoId) produtoId.value = '';
-  if (quantidadeBaixa) quantidadeBaixa.value = '';
-  dlgBaixa.showModal();
+
+async function baixaEstoque({ id, quantidade, subsequente, autorizadoGestor, conferente }) {
+  // POST /api/produtos/{id}/baixa  (ajuste se seu endpoint for diferente)
+  const url = `${API.BAIXA_BASE}/${encodeURIComponent(id)}/baixa`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      quantidade,
+      subsequente,        // 'SIM' / 'NAO'
+      autorizadoGestor,   // 'SIM' / 'NAO' / ''
+      conferente
+    }),
+  });
+  if (!res.ok) {
+    const txt = await res.text().catch(() => '');
+    throw new Error(txt || `Erro na baixa (${res.status})`);
+  }
+  return res.json().catch(() => ({}));
 }
 
 /* ========= BINDINGS ========= */
 document.addEventListener('DOMContentLoaded', () => {
-  renderRows(MOCK_PRODUCTS);
+  // busca inicial do back
+  fetchAndRender();
 
-  btnNew?.addEventListener('click', openNewModal);
-
-  gridBody?.addEventListener('click', (e) => {
-    const editBtn = e.target.closest('.js-edit');
-    const delBtn  = e.target.closest('.js-remove');
-    if (editBtn) openEditModal(editBtn.dataset.id);
-    if (delBtn)  openRemoveModal(delBtn.dataset.id);
+  // busca por texto (Enter)
+  const q = document.getElementById('q');
+  q?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      state.q = q.value || '';
+      state.page = 0;
+      fetchAndRender();
+    }
   });
 
-  // Cancelar → fecha o dialog pai
+  // novo produto
+  btnNew?.addEventListener('click', () => {
+    formProduto.reset();
+    dlgProduto.showModal();
+  });
+
+  // abrir baixa
+  btnBaixa?.addEventListener('click', () => {
+    formBaixa.reset();
+    wrapAutGestor.classList.add('is-hidden');
+    dlgBaixa.showModal();
+  });
+
+  // mostrar/ocultar "Autorização do gestor?" quando subsequente = NAO
+  fSubsequente?.addEventListener('change', () => {
+    const isNo = fSubsequente.value === 'NAO';
+    wrapAutGestor.classList.toggle('is-hidden', !isNo);
+    if (!isNo) fAutGestor.value = '';
+  });
+
+  // cancelar modais
   document.querySelectorAll('[data-cancel]').forEach(btn => {
     btn.addEventListener('click', () => {
       const dialog = btn.closest('dialog');
@@ -141,60 +259,92 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Microfeedback: salvar/fechar (pré-visualização)
-  formProduto?.addEventListener('submit', (e) => {
+  // submit novo produto
+  formProduto?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = formProduto.querySelector('.btn');
-    const original = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Salvando...';
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.textContent = original;
+    const submitBtn = formProduto.querySelector('.btn');
+    const original = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Salvando…';
+
+    try {
+      const payload = {
+        nome: (fName.value || '').trim(),
+        setor: (fSector.value || '').trim(),
+        categoria: (fCategory.value || '').trim(),
+        unidade: (fUnit.value || '').trim(),
+        estoque: fStock.value ? Number(fStock.value) : 0,
+        local: (fLocation.value || '').trim(),
+        minimo: fMin.value ? Number(fMin.value) : 0,
+        notaFiscal: (fNfe.value || '').trim(),
+        conferente: (fChecker.value || '').trim(),
+      };
+      await createProduct(payload);
       dlgProduto.open && dlgProduto.close();
-    }, 600);
+      // Recarrega da API para que botões de ação apareçam
+      state.page = 0;
+      await fetchAndRender();
+    } catch (err) {
+      alert(err.message || 'Erro ao salvar');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = original;
+    }
   });
 
-  formRemover?.addEventListener('submit', (e) => {
+  // submit baixa de estoque
+  formBaixa?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = formRemover.querySelector('.btn.danger');
-    const original = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Removendo...';
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.textContent = original;
-      dlgRemover.open && dlgRemover.close();
-    }, 600);
+    const submitBtn = formBaixa.querySelector('.btn');
+    const original = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processando…';
+
+    try {
+      const id = Number(fProdutoId.value);
+      const quantidade = Number(fQtdBaixa.value);
+      const subsequente = fSubsequente.value || '';
+      const autorizadoGestor = (subsequente === 'NAO') ? (fAutGestor.value || '') : '';
+      const conferente = (fCheckerBaixa.value || '').trim();
+
+      if (!id || !quantidade || !subsequente) {
+        throw new Error('Preencha ID, Quantidade e Subsequente.');
+      }
+      if (subsequente === 'NAO' && !autorizadoGestor) {
+        throw new Error('Informe se há autorização do gestor.');
+      }
+
+      await baixaEstoque({ id, quantidade, subsequente, autorizadoGestor, conferente });
+      dlgBaixa.open && dlgBaixa.close();
+      await fetchAndRender();
+    } catch (err) {
+      alert(err.message || 'Erro na baixa de estoque');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = original;
+    }
   });
 
-  // Baixa de estoque (pré-visualização)
-  btnBaixa?.addEventListener('click', openBaixaModal);
-  formBaixa?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const btn = formBaixa.querySelector('.btn');
-    const original = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Processando baixa...';
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.textContent = original;
-      dlgBaixa?.open && dlgBaixa.close();
-    }, 700);
+  // ações (aparecem só quando veio do back)
+  gridBody?.addEventListener('click', (e) => {
+    const editBtn = e.target.closest('.js-edit');
+    const delBtn  = e.target.closest('.js-remove');
+    if (editBtn) {
+      const id = editBtn.dataset.id;
+      console.log('Editar', id, '(implementar quando o back expor o endpoint)');
+    }
+    if (delBtn) {
+      const id = delBtn.dataset.id;
+      console.log('Remover', id, '(implementar quando o back expor o endpoint)');
+    }
   });
 
-  btnClearAll?.addEventListener('click', () => {
-    console.log('Limpar sessão (pré-visualização).');
-  });
-
-  /* ====== Footer: ano igual à dashboard ====== */
+  // footer: ano
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 });
 
-/* ====== QoL extra: Esc fecha qualquer dialog aberto ====== */
+// Esc fecha qualquer dialog
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('dialog[open]').forEach(d => d.close());
-  }
+  if (e.key === 'Escape') document.querySelectorAll('dialog[open]').forEach(d => d.close());
 });
