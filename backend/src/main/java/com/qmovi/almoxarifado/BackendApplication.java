@@ -1,4 +1,4 @@
-package com.qmovi.backend;
+package com.qmovi.almoxarifado;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

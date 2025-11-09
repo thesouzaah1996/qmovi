@@ -1,6 +1,6 @@
-package com.qmovi.backend.repository;
+package com.qmovi.almoxarifado.repository;
 
-import com.qmovi.backend.model.Produto;
+import com.qmovi.almoxarifado.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

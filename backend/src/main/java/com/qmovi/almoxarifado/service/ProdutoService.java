@@ -1,7 +1,8 @@
-package com.qmovi.backend.service;
+package com.qmovi.almoxarifado.service;
 
-import com.qmovi.backend.model.Produto;
-import com.qmovi.backend.repository.ProdutoRepository;
+import com.qmovi.almoxarifado.dto.ProdutoRequest;
+import com.qmovi.almoxarifado.model.Produto;
+import com.qmovi.almoxarifado.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ProdutoService {
         this.repository = repository;
     }
 
-    public Produto addProduto(Produto produto) {
+    public Produto addProduto(ProdutoRequest produtoRequest) {
         return repository.save(produto);
     }
 }

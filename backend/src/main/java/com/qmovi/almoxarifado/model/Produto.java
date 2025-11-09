@@ -1,4 +1,4 @@
-package com.qmovi.backend.model;
+package com.qmovi.almoxarifado.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,9 @@ public class Produto {
 
     @Column(name = "id_produto", nullable = false, unique = true)
     private String idProduto;
+
+    @Column(name = "nota_fiscal", nullable = false)
+    private String notaFiscal;
 
     @Column(nullable = false)
     private String nome;
