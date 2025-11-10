@@ -1,0 +1,28 @@
+/* breadcrumb igual ao das outras páginas */
+.crumbs{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#64748b;
+  font-size:13px;
+  margin:18px 0 16px;
+  padding-left:8px; /* deixa alinhado à esquerda do primeiro bloco */
+}
+.crumbs a{
+  color:#64748b;
+  text-decoration:none;
+}
+.crumbs a:hover{
+  text-decoration:underline;
+}
+
+/* layout 2x2 padrão */
+.grid.grid--two .module{
+  grid-column: span 6;
+}
+
+@media (max-width:780px){
+  .grid.grid--two .module{
+    grid-column: span 4;
+  }
+}

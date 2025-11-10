@@ -1,0 +1,27 @@
+/* Pequenos ajustes de Portaria mantendo a base do almoxarifado.css */
+.tabs{
+  display:flex; gap:10px; margin:10px 0 14px;
+}
+.tab{
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid #e2e8f0; background:#fff; color:#0f172a;
+  border-radius:12px; padding:10px 14px; font-weight:700; cursor:pointer;
+  box-shadow:0 3px 10px rgba(2,6,23,.05);
+}
+.tab:hover{ background:#f8fafc }
+.tab.is-active{ border-color:#c7d2fe; box-shadow:0 0 0 4px var(--ring) inset; color:#1d4ed8 }
+
+.tab-panel.is-hidden{ display:none !important; }
+
+/* badges simples para status */
+.badge{
+  display:inline-block; padding:4px 8px; border-radius:999px; font-weight:700; font-size:12px;
+  border:1px solid #e5e7eb; background:#f9fafb; color:#374151;
+}
+.badge.green{ background:#ecfdf5; border-color:#a7f3d0; color:#065f46 }
+.badge.yellow{ background:#fffbeb; border-color:#fde68a; color:#92400e }
+.badge.blue{ background:#eff6ff; border-color:#bfdbfe; color:#1e40af }
+.badge.gray{ background:#f3f4f6; border-color:#e5e7eb; color:#374151 }
+
+/* ícones Lucide nos botões de aba */
+.tab i{ width:18px; height:18px; }

@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Qmovi • Portaria</title>
+
+  <!-- fontes e estilos -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- base visual igual à Almox -->
+  <link rel="stylesheet" href="css/almoxarifado.css" />
+  <!-- ajustes específicos da Portaria -->
+  <link rel="stylesheet" href="css/portaria.css" />
+
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="js/portaria.js"></script>
+</head>
+<body>
+  <!-- host dos toasts -->
+  <div id="toastHost" class="toast-host" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Topbar igual -->
+  <header class="topbar" aria-label="Barra superior">
+    <a class="brand" href="dashboard.html" aria-label="Início Qmovi">
+      <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi" />
+    </a>
+
+    <!-- Menu do usuário -->
+    <div class="user-menu">
+      <button id="avatarBtn" class="avatar-btn" aria-haspopup="menu" aria-controls="userMenu" aria-expanded="false">
+        <span class="avatar-circle" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21a8 8 0 0 0-16 0" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </span>
+        <span class="sr-only">Abrir menu do usuário</span>
+      </button>
+
+      <div id="userMenu" class="menu" role="menu" aria-labelledby="avatarBtn">
+        <button class="menu-item" role="menuitem" data-action="profile">
+          <span class="ico ico-user" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21a8 8 0 0 0-16 0" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </span>
+          <span>Editar perfil</span>
+        </button>
+
+        <div class="menu-sep" role="separator"></div>
+
+        <button class="menu-item danger" role="menuitem" data-action="logout">
+          <span class="ico ico-exit" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </span>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Breadcrumb -->
+    <nav class="crumbs" aria-label="Caminho">
+      <a href="dashboard.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <strong>Portaria</strong>
+    </nav>
+
+    <!-- Abas -->
+    <div class="tabs">
+      <button class="tab is-active" data-tab="entradas">
+        <i data-lucide="file-text"></i><span>Entrada de Notas</span>
+      </button>
+      <button class="tab" data-tab="fila">
+        <i data-lucide="list-ordered"></i><span>Fila de Espera</span>
+      </button>
+    </div>
+
+    <!-- Toolbar da aba ativa -->
+    <section class="toolbar" aria-label="Ferramentas">
+      <div class="filters">
+        <label class="field" style="flex:1;min-width:260px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input id="q" placeholder="Buscar por NF, placa, fornecedor..." autocomplete="off" />
+        </label>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btnNovaEntrada" type="button">+ Registrar Entrada</button>
+        <button class="btn secondary" id="btnNovoFila" type="button">+ Adicionar à Fila</button>
+      </div>
+    </section>
+
+    <!-- Conteúdo: Entradas -->
+    <section class="card tab-panel" id="panel-entradas">
+      <header class="card-head">
+        <h2>Entradas registradas</h2>
+        <small id="countEntradas">0 itens</small>
+      </header>
+      <div class="table-wrap">
+        <table class="table" id="tbEntradas" aria-label="Entradas de notas">
+          <thead>
+            <tr>
+              <th>NF</th>
+              <th>Fornecedor</th>
+              <th>Placa</th>
+              <th>Motorista</th>
+              <th>Volumes</th>
+              <th>Peso (kg)</th>
+              <th>Chegada</th>
+              <th>Doca</th>
+              <th>Status</th>
+              <th style="width:200px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="bodyEntradas"><tr><td colspan="10" id="empty">Nenhum registro.</td></tr></tbody>
+        </table>
+      </div>
+      <footer class="card-foot">
+        <nav id="pagerEntradas" class="pager" aria-label="Paginação"></nav>
+      </footer>
+    </section>
+
+    <!-- Conteúdo: Fila -->
+    <section class="card tab-panel is-hidden" id="panel-fila">
+      <header class="card-head">
+        <h2>Fila de Espera (Docas)</h2>
+        <small id="countFila">0 veículos</small>
+      </header>
+      <div class="table-wrap">
+        <table class="table" id="tbFila" aria-label="Fila de espera">
+          <thead>
+            <tr>
+              <th>Pos.</th>
+              <th>Placa</th>
+              <th>Transportadora</th>
+              <th>Tipo</th>
+              <th>Prioridade</th>
+              <th>Doca Pref.</th>
+              <th>Status</th>
+              <th style="width:260px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="bodyFila"><tr><td colspan="8" id="empty">Sem veículos na fila.</td></tr></tbody>
+        </table>
+      </div>
+      <footer class="card-foot">
+        <nav id="pagerFila" class="pager" aria-label="Paginação"></nav>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    © <span id="year"></span> Qmovi — Todos os direitos reservados.
+  </footer>
+
+  <!-- Modal: Nova Entrada de Nota -->
+  <dialog id="dlgEntrada" class="modal" aria-labelledby="tituloEntrada">
+    <form id="formEntrada" method="dialog">
+      <header><h3 id="tituloEntrada">Registrar Entrada de Nota</h3></header>
+      <div class="grid">
+        <label class="field"><span>Nº NF</span><input id="nfNumero" maxlength="40" required /></label>
+        <label class="field"><span>Fornecedor</span><input id="fornecedor" maxlength="100" required /></label>
+        <label class="field"><span>Placa</span><input id="placa" maxlength="8" placeholder="ABC1D23" required /></label>
+        <label class="field"><span>Motorista</span><input id="motorista" maxlength="80" /></label>
+        <label class="field"><span>Volumes</span><input id="volumes" type="number" min="0" step="1" /></label>
+        <label class="field"><span>Peso (kg)</span><input id="peso" type="number" min="0" step="0.01" /></label>
+        <label class="field"><span>Chegada</span><input id="chegada" type="datetime-local" required /></label>
+        <label class="field">
+          <span>Doca</span>
+          <select id="doca">
+            <option value="">—</option>
+            <option>01</option><option>02</option><option>03</option><option>04</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Status</span>
+          <select id="statusEntrada" required>
+            <option value="Aguardando">Aguardando</option>
+            <option value="Conferindo">Conferindo</option>
+            <option value="Conferida">Conferida</option>
+          </select>
+        </label>
+      </div>
+      <footer>
+        <button class="btn" type="submit">Salvar</button>
+        <button class="btn secondary" type="button" data-cancel>Cancelar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Modal: Inserir na Fila -->
+  <dialog id="dlgFila" class="modal" aria-labelledby="tituloFila">
+    <form id="formFila" method="dialog">
+      <header><h3 id="tituloFila">Adicionar Veículo à Fila</h3></header>
+      <div class="grid">
+        <label class="field"><span>Placa</span><input id="filaPlaca" maxlength="8" required /></label>
+        <label class="field"><span>Transportadora</span><input id="filaTransp" maxlength="80" required /></label>
+        <label class="field">
+          <span>Tipo</span>
+          <select id="filaTipo" required>
+            <option value="Entrega">Entrega</option>
+            <option value="Coleta">Coleta</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Prioridade</span>
+          <select id="filaPrioridade" required>
+            <option value="Normal">Normal</option>
+            <option value="Urgente">Urgente</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Doca Preferencial</span>
+          <select id="filaDoca">
+            <option value="">—</option>
+            <option>01</option><option>02</option><option>03</option><option>04</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Status</span>
+          <select id="filaStatus" required>
+            <option value="Aguardando">Aguardando</option>
+            <option value="Chamado">Chamado</option>
+            <option value="Em Doca">Em Doca</option>
+          </select>
+        </label>
+      </div>
+      <footer>
+        <button class="btn" type="submit">Adicionar</button>
+        <button class="btn secondary" type="button" data-cancel>Cancelar</button>
+      </footer>
+    </form>
+  </dialog>
+</body>
+</html>

@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="css/almoxarifado.css" />
 </head>
 <body>
+  <!-- Host dos toasts -->
+  <div id="toastHost" class="toast-host" aria-live="assertive" aria-atomic="true"></div>
+
   <header class="topbar">
     <a class="brand" href="dashboard.html" aria-label="Início Qmovi">
       <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi" />
@@ -54,14 +57,12 @@
   </header>
 
   <main class="wrap">
-    <!-- Breadcrumb minimalista -->
     <nav class="crumbs" aria-label="Caminho">
       <a href="dashboard.html" aria-current="page">Home</a>
       <span aria-hidden="true">›</span>
       <strong>Almoxarifado</strong>
     </nav>
 
-    <!-- Toolbar -->
     <section class="toolbar" aria-label="Ferramentas de listagem">
       <div class="filters">
         <label class="field" style="flex:1;min-width:260px">
@@ -80,7 +81,6 @@
       </div>
     </section>
 
-    <!-- Tabela -->
     <section class="card">
       <header class="card-head">
         <h2>Produtos</h2>
@@ -103,13 +103,11 @@
         </table>
       </div>
       <footer class="card-foot">
-        <!-- paginação -->
         <nav id="pager" class="pager" aria-label="Paginação"></nav>
       </footer>
     </section>
   </main>
 
-  <!-- Footer idêntico ao da dashboard -->
   <footer class="footer">
     © <span id="year"></span> Qmovi — Todos os direitos reservados.
   </footer>
@@ -120,9 +118,10 @@
       <header><h3 id="produtoTitulo">Novo Produto</h3></header>
       <div class="grid">
         <input type="hidden" id="id" />
+        <label class="field"><span>Nº Nota Fiscal</span><input id="nfeNumber" maxlength="40" placeholder="Ex.: 12345-1" /></label>
         <label class="field"><span>Nome</span><input id="name" required maxlength="120" /></label>
 
-        <!-- Setor (dropdown estilizado) -->
+        <!-- Setor -->
         <label class="field">
           <span>Setor</span>
           <select id="sector" required>
@@ -142,21 +141,11 @@
             <option value="Outros">Outros</option>
           </select>
         </label>
-
-        <label class="field"><span>Categoria</span><input id="category" maxlength="60" /></label>
-
-        <!-- Unidade como texto -->
+        
         <label class="field"><span>Unidade</span><input id="unit" maxlength="10" placeholder="ex.: un, cx, kg" /></label>
-
-        <label class="field"><span>Estoque</span><input id="stock" type="number" min="0" step="1" /></label>
+        <label class="field"><span>Quantidade</span><input id="stock" type="number" min="0" step="1" /></label>
         <label class="field"><span>Local</span><input id="location" maxlength="40" /></label>
-        <label class="field"><span>Mínimo</span><input id="min" type="number" min="0" step="1" /></label>
-
-        <!-- Nº Nota Fiscal -->
-        <label class="field"><span>Nº Nota Fiscal</span><input id="nfeNumber" maxlength="40" placeholder="Ex.: 12345-1" /></label>
-
-        <!-- Conferente responsável -->
-        <label class="field"><span>Conferente</span><input id="checker" maxlength="60" placeholder="Nome do conferente" /></label>
+        <label class="field"><span>Responsável pelo recebimento</span><input id="checker" maxlength="60" placeholder="Nome do conferente" /></label>
       </div>
       <footer>
         <button class="btn" value="confirm" type="submit">Salvar</button>
@@ -165,7 +154,7 @@
     </form>
   </dialog>
 
-  <!-- Modal: Baixa de Estoque (por ID) -->
+  <!-- Modal: Baixa de Estoque -->
   <dialog id="modalBaixa" class="modal" aria-labelledby="baixaTitulo">
     <form id="formBaixa" method="dialog">
       <header><h3 id="baixaTitulo">Baixa de Estoque</h3></header>
@@ -180,27 +169,16 @@
           <input id="quantidadeBaixa" type="number" min="1" step="1" required placeholder="Ex.: 3" />
         </label>
 
-        <!-- É para o setor subsequente? -->
-        <label class="field">
-          <span>Para setor responsável?</span>
-          <select id="subsequente" required>
+        <!-- Apenas Autorização do Gestor -->
+        <label class="field" id="wrapAutGestor">
+          <span>Autorizado pelo gestor?</span>
+          <select id="autGestor" required>
             <option value="" disabled selected>Selecione…</option>
             <option value="SIM">Sim</option>
             <option value="NAO">Não</option>
           </select>
         </label>
 
-        <!-- Só aparece se subsequente=NAO -->
-        <label class="field is-hidden" id="wrapAutGestor">
-          <span>Autorizado?</span>
-          <select id="autGestor">
-            <option value="" disabled selected>Selecione…</option>
-            <option value="SIM">Sim</option>
-            <option value="NAO">Não</option>
-          </select>
-        </label>
-
-        <!-- Conferente responsável -->
         <label class="field">
           <span>Conferente</span>
           <input id="checkerBaixa" maxlength="60" placeholder="Nome do conferente" />

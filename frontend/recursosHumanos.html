@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Qmovi • RH</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/RecursosHumanos.css" />
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="js/RecursosHumanos.js"></script>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar" aria-label="Barra superior">
+    <div class="container topbar-inner">
+      <a class="brand" href="dashboard.html" aria-label="Início Qmovi">
+        <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi" />
+      </a>
+
+      <div class="user-area">
+        <button class="avatar-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu">
+          <img class="avatar" src="img/user-icon.png" alt="Usuário" />
+        </button>
+        <nav class="dropdown" id="userMenu" role="menu" aria-labelledby="userBtn">
+          <a class="menu-item" href="#perfil" role="menuitem"><i data-lucide="user-cog"></i><span>Editar perfil</span></a>
+          <div class="menu-sep" role="separator"></div>
+          <a class="menu-item" href="#logout" role="menuitem" id="logoutBtn"><i data-lucide="log-out"></i><span>Sair</span></a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Breadcrumb igual ao Almoxarifado -->
+    <nav class="container crumbs" aria-label="Caminho">
+      <a href="dashboard.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <strong>Recursos Humanos</strong>
+    </nav>
+
+    <!-- Grade 2x2 -->
+    <section class="container grid grid--two" aria-label="Módulos de RH">
+      <a class="module" href="rh-usuarios.html" data-module="rh-usuarios">
+        <div class="ico"><i data-lucide="user-plus"></i></div>
+        <h3>Usuários</h3>
+        <p>Adicionar, editar e desativar usuários. Perfis e permissões.</p>
+      </a>
+
+      <a class="module" href="rh-ponto.html" data-module="rh-ponto">
+        <div class="ico"><i data-lucide="calendar-clock"></i></div>
+        <h3>Ponto & Jornada</h3>
+        <p>Registros de ponto, escalas, banco de horas e abonos.</p>
+      </a>
+
+      <a class="module" href="rh-beneficios.html" data-module="rh-beneficios">
+        <div class="ico"><i data-lucide="gift"></i></div>
+        <h3>Benefícios</h3>
+        <p>VT, VR, plano de saúde e elegibilidade por cargo/centro.</p>
+      </a>
+
+      <a class="module" href="rh-recrutamento.html" data-module="rh-recrutamento">
+        <div class="ico"><i data-lucide="briefcase"></i></div>
+        <h3>Recrutamento & Seleção</h3>
+        <p>Vagas, candidatos, etapas e feedbacks.</p>
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> Qmovi — Todos os direitos reservados.
+  </footer>
+</body>
+</html>
