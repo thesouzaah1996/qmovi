@@ -31,9 +31,6 @@ public class Produto {
     @Column(nullable = false)
     private Integer quantidade;
 
-    @Column(name = "quantidade_total")
-    private Integer quantidadeTotal;
-
     @Column(nullable = false)
     private String local;
 

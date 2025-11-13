@@ -5,6 +5,7 @@ import com.qmovi.almoxarifado.dto.ProdutoResponse;
 import com.qmovi.almoxarifado.model.Produto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProdutoMapper {
@@ -13,4 +14,6 @@ public interface ProdutoMapper {
     Produto toEntity(ProdutoRequest request);
 
     ProdutoResponse toResponse(Produto produto);
+
+    void updateFromRequest(ProdutoRequest request, @MappingTarget Produto entity);
 }
