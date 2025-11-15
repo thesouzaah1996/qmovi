@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="css/almoxarifado.css" />
 </head>
 <body>
-  <!-- Host dos toasts -->
   <div id="toastHost" class="toast-host" aria-live="assertive" aria-atomic="true"></div>
 
   <header class="topbar">
@@ -17,13 +16,12 @@
       <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi" />
     </a>
 
-    <!-- Menu do usuário -->
     <div class="user-menu">
       <button id="avatarBtn" class="avatar-btn" aria-haspopup="menu" aria-controls="userMenu" aria-expanded="false">
         <span class="avatar-circle" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21a8 8 0 0 0-16 0" />
-            <circle cx="12" cy="7" r="4" />
+            <path d="M20 21a8 8 0 0 0-16 0"></path>
+            <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </span>
         <span class="sr-only">Abrir menu do usuário</span>
@@ -33,8 +31,8 @@
         <button class="menu-item" role="menuitem" data-action="profile">
           <span class="ico ico-user" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21a8 8 0 0 0-16 0" />
-              <circle cx="12" cy="7" r="4" />
+              <path d="M20 21a8 8 0 0 0-16 0"></path>
+              <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </span>
           <span>Editar perfil</span>
@@ -45,9 +43,9 @@
         <button class="menu-item danger" role="menuitem" data-action="logout">
           <span class="ico ico-exit" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
           </span>
           <span>Sair</span>
@@ -67,8 +65,8 @@
       <div class="filters">
         <label class="field" style="flex:1;min-width:260px">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
           <input id="q" placeholder="Buscar por nome, ID..." autocomplete="off" />
         </label>
@@ -93,13 +91,12 @@
               <th>ID</th>
               <th>Nome</th>
               <th>Unid.</th>
-              <th>Estoque</th>
+              <th>Quantidade</th>
               <th>Local</th>
-              <th>Mín.</th>
               <th style="width:180px">Ações</th>
             </tr>
           </thead>
-          <tbody id="gridBody"><!-- dados via JS --></tbody>
+          <tbody id="gridBody"></tbody>
         </table>
       </div>
       <footer class="card-foot">
@@ -117,31 +114,32 @@
     <form id="formProduto" method="dialog">
       <header><h3 id="produtoTitulo">Novo Produto</h3></header>
       <div class="grid">
-        <input type="hidden" id="id" />
+        <!-- ID do Produto (obrigatório pelo DTO: @JsonProperty("id")) -->
+        <label class="field"><span>ID do Produto</span><input id="productId" maxlength="60" required placeholder="Ex.: SKU-001" /></label>
+
         <label class="field"><span>Nº Nota Fiscal</span><input id="nfeNumber" maxlength="40" placeholder="Ex.: 12345-1" /></label>
         <label class="field"><span>Nome</span><input id="name" required maxlength="120" /></label>
 
-        <!-- Setor -->
         <label class="field">
           <span>Setor</span>
           <select id="sector" required>
             <option value="" disabled selected>Selecione o setor…</option>
-            <option value="Almoxarifado">Almoxarifado</option>
-            <option value="PCP">PCP</option>
-            <option value="Embalagem">Embalagem</option>
-            <option value="Expedição">Expedição</option>
-            <option value="Carregamento">Carregamento</option>
-            <option value="Administracao">Administração</option>
-            <option value="Manutenção">Manutenção</option>
-            <option value="Furadeira">Furadeira</option>
-            <option value="Usinagem">Usinagem</option>
-            <option value="Corte">Corte</option>
-            <option value="Borda">Borda</option>
-            <option value="Pintura">Pintura</option>
-            <option value="Outros">Outros</option>
+            <option>Almoxarifado</option>
+            <option>PCP</option>
+            <option>Embalagem</option>
+            <option>Expedição</option>
+            <option>Carregamento</option>
+            <option>Administração</option>
+            <option>Manutenção</option>
+            <option>Furadeira</option>
+            <option>Usinagem</option>
+            <option>Corte</option>
+            <option>Borda</option>
+            <option>Pintura</option>
+            <option>Outros</option>
           </select>
         </label>
-        
+
         <label class="field"><span>Unidade</span><input id="unit" maxlength="10" placeholder="ex.: un, cx, kg" /></label>
         <label class="field"><span>Quantidade</span><input id="stock" type="number" min="0" step="1" /></label>
         <label class="field"><span>Local</span><input id="location" maxlength="40" /></label>
@@ -161,7 +159,7 @@
       <div class="grid">
         <label class="field">
           <span>ID do Produto</span>
-          <input id="produtoId" type="number" min="1" step="1" required placeholder="Ex.: 101" />
+          <input id="produtoId" type="text" required placeholder="Ex.: SKU-001" />
         </label>
 
         <label class="field">
@@ -169,7 +167,6 @@
           <input id="quantidadeBaixa" type="number" min="1" step="1" required placeholder="Ex.: 3" />
         </label>
 
-        <!-- Apenas Autorização do Gestor -->
         <label class="field" id="wrapAutGestor">
           <span>Autorizado pelo gestor?</span>
           <select id="autGestor" required>

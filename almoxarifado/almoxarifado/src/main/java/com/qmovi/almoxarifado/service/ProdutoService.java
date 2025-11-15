@@ -41,7 +41,7 @@ public class ProdutoService {
 
         Produto existente = repository.findById(id)
                 .orElseThrow(() ->new ResourceNotFoundException(
-                        "Produto não encontrado com id: " + request.idProduto()
+                        "Produto não encontrado com id: " + id
                 ));
 
         if (request.quantidade() < 0) {

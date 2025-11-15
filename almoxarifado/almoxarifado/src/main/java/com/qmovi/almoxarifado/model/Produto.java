@@ -25,6 +25,10 @@ public class Produto {
     @Column(nullable = false)
     private String nome;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Setor setor;
+
     @Column(nullable = false)
     private String unidade;
 

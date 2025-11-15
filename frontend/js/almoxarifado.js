@@ -47,38 +47,52 @@ const pagerEl    = document.getElementById('pager');
 
 const dlgProduto   = document.getElementById('modalProduto');
 const formProduto  = document.getElementById('formProduto');
+const fProductId   = document.getElementById('productId');     // novo: ID do Produto
 const fName        = document.getElementById('name');
-const fCategory    = document.getElementById('category');
 const fUnit        = document.getElementById('unit');
 const fStock       = document.getElementById('stock');
 const fLocation    = document.getElementById('location');
-const fMin         = document.getElementById('min');
 const fSector      = document.getElementById('sector');
 const fNfe         = document.getElementById('nfeNumber');
 const fChecker     = document.getElementById('checker');
 
 const dlgBaixa       = document.getElementById('modalBaixa');
 const formBaixa      = document.getElementById('formBaixa');
-const fProdutoId     = document.getElementById('produtoId');
+const fProdutoId     = document.getElementById('produtoId');   // string (id do produto)
 const fQtdBaixa      = document.getElementById('quantidadeBaixa');
 const fAutGestor     = document.getElementById('autGestor');
 const fCheckerBaixa  = document.getElementById('checkerBaixa');
 
 /* ========= HELPERS ========= */
+// normaliza acentos e transforma um label de setor em um ENUM em CAIXA_ALTA
+function toEnum(value) {
+  if (!value) return '';
+  return value
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove acentos
+    .replace(/\s+/g, '_')                             // espaços -> _
+    .replace(/[^A-Z_]/gi, '')                         // mantém letras/_
+    .toUpperCase();
+}
+
 function normalizeResponse(data) {
   const items = Array.isArray(data) ? data : (data?.content ?? data?.items ?? []);
   state.totalPages = Number(data?.totalPages ?? 1);
   state.totalElements = Number(data?.totalElements ?? items.length);
+
+  // ProdutoResponse do backend:
+  // {
+  //   "id": "ABC-123",   // <- idProduto (string)
+  //   "nome": "Parafuso",
+  //   "unidade": "UN",
+  //   "quantidade": 50,
+  //   "local": "A-01"
+  // }
   return items.map(p => ({
-    id: p.id ?? p.productId ?? null,
-    name: p.name ?? p.nome ?? '',
-    unit: (p.unit ?? p.unidade ?? ''),
-    stock: Number(p.stock ?? p.estoque ?? 0),
-    location: p.location ?? p.local ?? '',
-    min: Number(p.min ?? p.minimo ?? 0),
-    sector: p.sector ?? p.setor ?? '',
-    nfe: p.nfe ?? p.notaFiscal ?? p.numeroNotaFiscal ?? '',
-    checker: p.checker ?? p.conferente ?? '',
+    id: p.id ?? null, // string idProduto
+    name: p.nome ?? '',
+    unit: p.unidade ?? '',
+    stock: Number(p.quantidade ?? 0),
+    location: p.local ?? ''
   }));
 }
 
@@ -92,7 +106,7 @@ function buildUrl() {
 
 function setLoading(isLoading) {
   state.loading = isLoading;
-  if (isLoading) gridBody.innerHTML = `<tr><td id="empty" colspan="7">Carregando…</td></tr>`;
+  if (isLoading) gridBody.innerHTML = `<tr><td id="empty" colspan="6">Carregando…</td></tr>`;
 }
 
 function renderPager() {
@@ -125,7 +139,7 @@ function renderPager() {
 
 function renderRows(items, fromBackend) {
   if (!items?.length) {
-    gridBody.innerHTML = `<tr><td colspan="7" id="empty">Nenhum produto encontrado.</td></tr>`;
+    gridBody.innerHTML = `<tr><td colspan="6" id="empty">Nenhum produto encontrado.</td></tr>`;
     listCount.textContent = '0 itens';
     return;
   }
@@ -140,7 +154,6 @@ function renderRows(items, fromBackend) {
         <td>${(p.unit ?? '').trim() || '-'}</td>
         <td>${Number.isFinite(p.stock) ? p.stock : '-'}</td>
         <td>${(p.location ?? '').trim() || '-'}</td>
-        <td>${Number.isFinite(p.min) ? p.min : '-'}</td>
         <td>
           <div class="row-actions">
             ${canActions ? `
@@ -153,9 +166,8 @@ function renderRows(items, fromBackend) {
   }).join('');
 }
 
-/* ========= TOAST COM PAUSAR (⏸ / ▶) E FECHAR (✖) ========= */
+/* ========= TOAST ========= */
 function showToastError(message, title = 'Baixa bloqueada', ms = TOAST_MS) {
-  // suporte a showToastError(msg, ms)
   if (typeof title === 'number') { ms = title; title = 'Baixa bloqueada'; }
 
   const host = document.getElementById('toastHost');
@@ -184,8 +196,6 @@ function showToastError(message, title = 'Baixa bloqueada', ms = TOAST_MS) {
   `;
 
   host.appendChild(el);
-
-  // barra acompanha o tempo informado
   const bar = el.querySelector('.progress > i');
   if (bar) bar.style.animationDuration = `${ms}ms`;
 
@@ -215,13 +225,11 @@ function showToastError(message, title = 'Baixa bloqueada', ms = TOAST_MS) {
     if (bar) bar.style.animationPlayState = 'paused';
   };
 
-  // inicia a contagem
   startTimer();
 
   const pauseBtn = el.querySelector('.pause');
   const closeBtn = el.querySelector('.close');
 
-  // alterna entre pausar ⏸ e retomar ▶
   pauseBtn?.addEventListener('click', () => {
     if (!paused) {
       paused = true;
@@ -258,7 +266,7 @@ async function fetchAndRender() {
     renderPager();
   } catch (err) {
     console.error(err);
-    gridBody.innerHTML = `<tr><td id="empty" colspan="7">Erro ao carregar dados.</td></tr>`;
+    gridBody.innerHTML = `<tr><td id="empty" colspan="6">Erro ao carregar dados.</td></tr>`;
     listCount.textContent = '0 itens';
     if (pagerEl) pagerEl.innerHTML = '';
   } finally {
@@ -266,6 +274,18 @@ async function fetchAndRender() {
   }
 }
 
+/** Cria produto conforme ProdutoRequest:
+ * {
+ *  "id": "ABC-123",
+ *  "nota_fiscal": "12345-1",
+ *  "nome": "Parafuso",
+ *  "setor": "ALMOXARIFADO",
+ *  "unidade": "UN",
+ *  "quantidade": 10,
+ *  "local": "A-01",
+ *  "responsavel_recebimento": "Fulano"
+ * }
+ */
 async function createProduct(payload) {
   const res = await fetch(API.BASE, {
     method: 'POST',
@@ -305,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnNew?.addEventListener('click', () => { formProduto.reset(); dlgProduto.showModal(); });
   btnBaixa?.addEventListener('click', () => { formBaixa.reset(); dlgBaixa.showModal(); });
 
-  // Se "Autorizado? = NÃO" -> fecha modal e mostra toast (com pausa e fechar)
+  // Se "Autorizado? = NÃO" -> fecha modal e mostra toast
   fAutGestor?.addEventListener('change', () => {
     if (fAutGestor.value === 'NAO') {
       if (dlgBaixa.open) dlgBaixa.close();
@@ -320,6 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // SUBMIT: Novo Produto -> envia exatamente conforme ProdutoRequest
   formProduto?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = formProduto.querySelector('.btn');
@@ -327,17 +348,22 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Salvando…';
     try {
+      // transforma label do setor em ENUM esperado pelo backend
+      const setorEnum = toEnum(fSector.value);
+
       const payload = {
+        id: (fProductId.value || '').trim(),                         // @JsonProperty("id") -> idProduto
+        nota_fiscal: (fNfe.value || '').trim(),                      // @JsonProperty("nota_fiscal")
         nome: (fName.value || '').trim(),
-        setor: (fSector.value || '').trim(),
-        categoria: (fCategory.value || '').trim(),
+        setor: setorEnum,                                            // enum Setor
         unidade: (fUnit.value || '').trim(),
-        estoque: fStock.value ? Number(fStock.value) : 0,
+        quantidade: fStock.value ? Number(fStock.value) : 0,
         local: (fLocation.value || '').trim(),
-        minimo: fMin.value ? Number(fMin.value) : 0,
-        notaFiscal: (fNfe.value || '').trim(),
-        conferente: (fChecker.value || '').trim(),
+        responsavel_recebimento: (fChecker.value || '').trim()       // @JsonProperty("responsavel_recebimento")
       };
+
+      if (!payload.id) throw new Error("Informe o 'ID do Produto'.");
+
       await createProduct(payload);
       dlgProduto.open && dlgProduto.close();
       state.page = 0;
@@ -350,6 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // SUBMIT: Baixa
   formBaixa?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -365,13 +392,13 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Processando…';
     try {
-      const id = Number(fProdutoId.value);
+      const id = (fProdutoId.value || '').trim();       // string (id do produto)
       const quantidade = Number(fQtdBaixa.value);
-      const autorizadoGestor = fAutGestor.value || '';
+      const autorizadoGestor = fAutGestor.value === 'SIM';
       const conferente = (fCheckerBaixa.value || '').trim();
 
-      if (!id || !quantidade || !autorizadoGestor) {
-        throw new Error('Preencha ID, Quantidade e o campo "Autorizado?".');
+      if (!id || !quantidade || quantidade <= 0) {
+        throw new Error('Preencha o ID do Produto e a Quantidade (> 0).');
       }
 
       await baixaEstoque({ id, quantidade, autorizadoGestor, conferente });

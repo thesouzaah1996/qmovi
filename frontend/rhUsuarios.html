@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Qmovi • RH • Usuários</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- 1) CSS base do projeto (com cache-buster) -->
+  <link rel="stylesheet" href="css/dashboard.css?v=2025-11-10" />
+
+  <!-- 2) CSS do módulo com “kit mínimo” para não quebrar se o base não carregar -->
+  <link rel="stylesheet" href="css/rhUsuarios.css?v=2025-11-10" />
+
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="js/rhUsuarios.js?v=2025-11-10"></script>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar" aria-label="Barra superior">
+    <div class="container topbar-inner">
+      <a class="brand" href="dashboard.html" aria-label="Início Qmovi">
+        <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi">
+      </a>
+
+      <div class="user-area">
+        <button class="avatar-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu">
+          <img class="avatar" src="img/user-icon.png" alt="Usuário" />
+        </button>
+        <nav class="dropdown" id="userMenu" role="menu" aria-labelledby="userBtn">
+          <a class="menu-item" href="#perfil" role="menuitem"><i data-lucide="user-cog"></i><span>Editar perfil</span></a>
+          <div class="menu-sep" role="separator"></div>
+          <a class="menu-item" href="#logout" role="menuitem" id="logoutBtn"><i data-lucide="log-out"></i><span>Sair</span></a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toasters -->
+  <div id="toastHost" class="toast-host" aria-live="assertive" aria-atomic="true"></div>
+
+  <main class="wrap">
+    <!-- Breadcrumb no canto esquerdo do primeiro bloco -->
+    <nav class="container crumbs" aria-label="Caminho">
+      <a href="dashboard.html">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="recursosHumanos.html">Recursos Humanos</a>
+      <span aria-hidden="true">›</span>
+      <strong>Usuários</strong>
+    </nav>
+
+    <!-- Toolbar igual almox: busca à esquerda, ações à direita -->
+    <section class="container toolbar" aria-label="Ferramentas">
+      <div class="filters">
+        <label class="field" style="flex:1;min-width:280px">
+          <i data-lucide="search" aria-hidden="true"></i>
+          <input id="q" placeholder="Buscar por nome ou e-mail..." autocomplete="off" />
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="btnNovo"><i data-lucide="user-plus"></i>+ Novo Usuário</button>
+      </div>
+    </section>
+
+    <!-- Lista -->
+    <section class="container card">
+      <header class="card-head">
+        <h2>Usuários</h2>
+        <small id="listCount">0 itens</small>
+      </header>
+
+      <div class="table-wrap">
+        <table class="table" aria-label="Tabela de usuários">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Último acesso</th>
+              <th style="width:240px">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="gridBody">
+            <tr><td id="empty" colspan="7">Carregando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="card-foot">
+        <nav id="pager" class="pager" aria-label="Paginação"></nav>
+      </footer>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> Qmovi — Todos os direitos reservados.
+  </footer>
+
+  <!-- Modal: Novo/Editar -->
+  <dialog id="modalUser" class="modal" aria-labelledby="userModalTitle">
+    <form id="formUser" method="dialog">
+      <header><h3 id="userModalTitle">Novo usuário</h3></header>
+
+      <div class="grid">
+        <input type="hidden" id="uid" />
+
+        <label class="field">
+          <span>Nome</span>
+          <input id="name" required maxlength="120" />
+        </label>
+
+        <label class="field">
+          <span>E-mail</span>
+          <input id="email" type="email" required maxlength="160" />
+        </label>
+
+        <label class="field">
+          <span>Perfil</span>
+          <select id="role" required>
+            <option value="" disabled selected>Selecione…</option>
+            <option value="ADMIN">Administrador</option>
+            <option value="GESTOR">Gestor</option>
+            <option value="COLAB">Colaborador</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Status</span>
+          <select id="status" required>
+            <option value="ATIVO" selected>Ativo</option>
+            <option value="INATIVO">Inativo</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Senha (criação/troca)</span>
+          <input id="pwd" type="password" minlength="6" placeholder="••••••" />
+        </label>
+
+        <label class="field">
+          <span>Confirmar senha</span>
+          <input id="pwd2" type="password" minlength="6" placeholder="••••••" />
+        </label>
+      </div>
+
+      <footer>
+        <button class="btn" value="confirm" type="submit">Salvar</button>
+        <button class="btn secondary" data-cancel type="button">Cancelar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Modal: Alterar status -->
+  <dialog id="modalToggle" class="modal" aria-labelledby="toggleTitle">
+    <form id="formToggle" method="dialog">
+      <header><h3 id="toggleTitle">Alterar status</h3></header>
+      <p id="toggleMsg" class="muted">Confirmar a alteração de status?</p>
+      <footer>
+        <button class="btn danger" value="confirm" type="submit">Confirmar</button>
+        <button class="btn secondary" data-cancel type="button">Cancelar</button>
+      </footer>
+    </form>
+  </dialog>
+</body>
+</html>
