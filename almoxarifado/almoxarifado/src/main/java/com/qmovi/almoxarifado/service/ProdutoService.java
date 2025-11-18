@@ -1,5 +1,6 @@
 package com.qmovi.almoxarifado.service;
 
+import com.qmovi.almoxarifado.dto.BaixaEstoqueRequest;
 import com.qmovi.almoxarifado.dto.ProdutoRequest;
 import com.qmovi.almoxarifado.dto.ProdutoResponse;
 import com.qmovi.almoxarifado.exception.BadRequestException;
@@ -63,6 +64,37 @@ public class ProdutoService {
                 ));
 
         repository.delete(existente);
+    }
+
+    @Transactional
+    public ProdutoResponse baixarEstoque(BaixaEstoqueRequest request) {
+
+        if (Boolean.FALSE.equals(request.autorizadoGestor())) {
+            throw new BadRequestException(
+                    "Baixa não autorizada. Para concluir, é necessário a altorização do gestor responsável."
+            );
+        }
+
+        Produto produto = repository.findByIdProduto(request.idProduto())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Produto não encontrado com id de produto: " + request.idProduto()
+                ));
+
+        if (request.quantidadeBaixa() <= 0) {
+            throw new BadRequestException("A quantidade a dar baixa deve ser maior que zero.");
+        }
+
+        if (produto.getQuantidade() < request.quantidadeBaixa()) {
+            throw new BadRequestException(
+                    "Quantidade em estoque insuficiente para a baixa solicitada"
+            );
+        }
+
+        int novaQuantidade = produto.getQuantidade() - request.quantidadeBaixa();
+        produto.setQuantidade(novaQuantidade);
+
+        Produto salvo = repository.save(produto);
+        return mapper.toResponse(salvo);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.qmovi.almoxarifado.controller;
 
+import com.qmovi.almoxarifado.dto.BaixaEstoqueRequest;
 import com.qmovi.almoxarifado.dto.ProdutoRequest;
 import com.qmovi.almoxarifado.dto.ProdutoResponse;
 import com.qmovi.almoxarifado.model.Produto;
@@ -51,6 +52,14 @@ public class ProdutoController {
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/baixa-estoque")
+    public ResponseEntity<ProdutoResponse> baixarEstoque(
+            @Valid @RequestBody BaixaEstoqueRequest request
+            ) {
+        ProdutoResponse response = service.baixarEstoque(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
 
