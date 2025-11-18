@@ -54,5 +54,15 @@ public class ProdutoService {
 
         return mapper.toResponse(salvo);
     }
+
+    @Transactional
+    public void excluir(Long id) {
+        Produto existente = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Produto não encontrado com id: " + id
+                ));
+
+        repository.delete(existente);
+    }
 }
 
