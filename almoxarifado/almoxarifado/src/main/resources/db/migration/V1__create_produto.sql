@@ -1,4 +1,3 @@
--- V1__create_produto.sql
 CREATE TABLE IF NOT EXISTS produto (
     id BIGSERIAL PRIMARY KEY,
     id_produto               VARCHAR(50)  NOT NULL,

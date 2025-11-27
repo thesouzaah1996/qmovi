@@ -23,5 +23,6 @@ public record ProdutoResponse(
 
         @JsonProperty("responsavel_recebimento")
         String responsavelRecebimento
+
 ) {
 }

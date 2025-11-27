@@ -68,11 +68,11 @@
             <circle cx="11" cy="11" r="7"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input id="q" placeholder="Buscar por nome, ID..." autocomplete="off" />
+          <input id="q" placeholder="Buscar por ID, nome..." autocomplete="off" />
         </label>
       </div>
       <div class="actions">
-        <button class="btn" id="btnNew" type="button">+ Novo Produto</button>
+        <button class="btn" id="btnNew" type="button">+ Adicionar</button>
         <button class="btn secondary" id="btnBaixa" type="button">Baixa de Estoque</button>
         <button class="btn secondary" id="btnExportCSV" type="button">Exportar CSV</button>
         <button class="btn secondary" id="btnPrint" type="button">Imprimir / PDF</button>
@@ -109,50 +109,72 @@
     © <span id="year"></span> Qmovi — Todos os direitos reservados.
   </footer>
 
-  <!-- Modal: Novo Produto -->
   <dialog id="modalProduto" class="modal" aria-labelledby="produtoTitulo">
     <form id="formProduto" method="dialog">
       <header><h3 id="produtoTitulo">Novo Produto</h3></header>
       <div class="grid">
-        <!-- ID do Produto (obrigatório pelo DTO: @JsonProperty("id")) -->
-        <label class="field"><span>ID do Produto</span><input id="productId" maxlength="60" required placeholder="Ex.: SKU-001" /></label>
+        <label class="field">
+          <span>ID do Produto</span>
+          <input id="productId" maxlength="60" required placeholder="Ex.: SKU-001" />
+        </label>
 
-        <label class="field"><span>Nº Nota Fiscal</span><input id="nfeNumber" maxlength="40" placeholder="Ex.: 12345-1" /></label>
-        <label class="field"><span>Nome</span><input id="name" required maxlength="120" /></label>
+        <label class="field">
+          <span>Nº Nota Fiscal</span>
+          <input id="nfeNumber" maxlength="40" placeholder="Ex.: 12345-1" />
+        </label>
+
+        <label class="field">
+          <span>Nome</span>
+          <input id="name" required maxlength="120" />
+        </label>
 
         <label class="field">
           <span>Setor</span>
-          <select id="sector" required>
-            <option value="" disabled selected>Selecione o setor…</option>
-            <option>Almoxarifado</option>
-            <option>PCP</option>
-            <option>Embalagem</option>
-            <option>Expedição</option>
-            <option>Carregamento</option>
-            <option>Administração</option>
-            <option>Manutenção</option>
-            <option>Furadeira</option>
-            <option>Usinagem</option>
-            <option>Corte</option>
-            <option>Borda</option>
-            <option>Pintura</option>
-            <option>Outros</option>
-          </select>
+            <select id="sector" required>
+              <option value="" disabled selected>Selecione o setor…</option>
+              <option value="ALMOXARIFADO">Almoxarifado</option>
+              <option value="PCP">PCP</option>
+              <option value="EMBALAGEM">Embalagem</option>
+              <option value="EXPEDICAO">Expedição</option>
+              <option value="CARREGAMENTO">Carregamento</option>
+              <option value="ADMINISTRACAO">Administração</option>
+              <option value="MANUTENCAO">Manutenção</option>
+              <option value="FURADEIRA">Furadeira</option>
+              <option value="USINAGEM">Usinagem</option>
+              <option value="CORTE">Corte</option>
+              <option value="BORDA">Borda</option>
+              <option value="PINTURA">Pintura</option>
+              <option value="OUTROS">Outros</option>
+            </select>
         </label>
 
-        <label class="field"><span>Unidade</span><input id="unit" maxlength="10" placeholder="ex.: un, cx, kg" /></label>
-        <label class="field"><span>Quantidade</span><input id="stock" type="number" min="0" step="1" /></label>
-        <label class="field"><span>Local</span><input id="location" maxlength="40" /></label>
-        <label class="field"><span>Responsável pelo recebimento</span><input id="checker" maxlength="60" placeholder="Nome do conferente" /></label>
+        <label class="field">
+          <span>Unidade</span>
+          <input id="unit" maxlength="10" placeholder="ex.: un, cx, kg" />
+        </label>
+
+        <label class="field">
+          <span>Quantidade</span>
+          <input id="stock" type="number" min="0" step="1" />
+        </label>
+
+        <label class="field">
+          <span>Local</span>
+          <input id="location" maxlength="40" />
+        </label>
+
+        <label class="field">
+          <span>Responsável pelo recebimento</span>
+          <input id="checker" maxlength="60" placeholder="Nome do conferente" />
+        </label>
       </div>
       <footer>
-        <button class="btn" value="confirm" type="submit">Salvar</button>
+        <button class="btn" id="btnSaveProduto" value="confirm" type="submit">Salvar</button>
         <button class="btn secondary" data-cancel type="button">Cancelar</button>
       </footer>
     </form>
   </dialog>
 
-  <!-- Modal: Baixa de Estoque -->
   <dialog id="modalBaixa" class="modal" aria-labelledby="baixaTitulo">
     <form id="formBaixa" method="dialog">
       <header><h3 id="baixaTitulo">Baixa de Estoque</h3></header>
@@ -183,6 +205,26 @@
       </div>
       <footer>
         <button class="btn" type="submit">Confirmar Baixa</button>
+        <button class="btn secondary" data-cancel type="button">Cancelar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="modalDelete" class="modal modal-danger" aria-labelledby="deleteTitulo">
+    <form id="formDelete" method="dialog">
+      <header>
+        <h3 id="deleteTitulo">Excluir produto</h3>
+      </header>
+      <div class="grid grid-single">
+        <p class="danger-text">
+          Tem certeza que deseja excluir o produto
+          <strong id="deleteName"></strong>?
+          Essa ação não poderá ser desfeita.
+        </p>
+        <input type="hidden" id="deleteId">
+      </div>
+      <footer>
+        <button class="btn danger" type="submit">Sim, excluir</button>
         <button class="btn secondary" data-cancel type="button">Cancelar</button>
       </footer>
     </form>

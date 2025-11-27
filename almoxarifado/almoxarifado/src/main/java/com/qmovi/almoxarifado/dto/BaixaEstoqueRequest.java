@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record BaixaEstoqueRequest(
         @NotBlank(message = "o ID do produto é obrigatório")
-        @JsonProperty("id_produto")
+        @JsonProperty("id")
         String idProduto,
 
         @NotNull(message = "A quantidade a dar baixa é obrigatório")

@@ -7,9 +7,10 @@ import com.qmovi.almoxarifado.model.Produto;
 import com.qmovi.almoxarifado.service.ProdutoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +20,14 @@ import java.util.List;
 @RequestMapping("/api/almoxarifado/produto")
 @CrossOrigin("*")
 @Tag(name = "Produtos - Almoxarifado")
+@RequiredArgsConstructor
 public class ProdutoController {
 
     private final ProdutoService service;
 
-    @Autowired
-    public ProdutoController(ProdutoService service) {
-        this.service = service;
-    }
-
     @GetMapping("/listar")
-    public List<Produto> listarProdutos() {
-        return service.listarProdutos();
+    public ResponseEntity<List<Produto>> listarProdutos() {
+        return ResponseEntity.ok(service.listarProdutos());
     }
 
     @PostMapping("/criar")
@@ -39,27 +36,50 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponse> editar(
-            @PathVariable Long id,
-            @Valid @RequestBody ProdutoRequest request) {
-
-     ProdutoResponse response = service.atualizar(id, request);
-     return ResponseEntity.ok(response);
+    @PutMapping("/editar/{idProduto}")
+    public ResponseEntity<ProdutoResponse> editar(@PathVariable String idProduto, @Valid @RequestBody ProdutoRequest request) {
+        ProdutoResponse response = service.atualizar(idProduto, request);
+        return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @DeleteMapping("/remover/{idProduto}")
+    public ResponseEntity<Void> excluir(@PathVariable String idProduto) {
+        service.excluir(idProduto);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/baixa-estoque")
-    public ResponseEntity<ProdutoResponse> baixarEstoque(
-            @Valid @RequestBody BaixaEstoqueRequest request
-            ) {
+    public ResponseEntity<ProdutoResponse> baixarEstoque(@Valid @RequestBody BaixaEstoqueRequest request) {
         ProdutoResponse response = service.baixarEstoque(request);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ProdutoResponse>> buscar(@RequestParam String termo) {
+        return ResponseEntity.ok(service.buscar(termo));
+    }
+
+    @GetMapping("/exportar-csv")
+    public ResponseEntity<String> exportarCsv() {
+        String csv = service.exportarCsv();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=produtos.csv")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv; charset=UTF-8")
+                .body(csv);
+    }
+
+    @GetMapping("/relatorio-produtos-pdf")
+    public ResponseEntity<byte[]> relatorioProdutosPdf() {
+        byte[] pdf = service.gerarRelatorioProdutosPdf();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=relatorio-estoque.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
+    }
+
+    @GetMapping("/relatorio-produtos")
+    public ResponseEntity<List<ProdutoResponse>> relatorioProdutos() {
+        return ResponseEntity.ok(service.listarTodosComoResponse());
     }
 }
-
