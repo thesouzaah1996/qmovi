@@ -1,42 +1,46 @@
 package com.qmovi.login.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Data
 @Entity
+@Table(name = "usuario", schema = "public")
+@Data
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false, length = 150)
     private String nome;
 
-    @NotBlank
+    @Column(nullable = false, length = 255, unique = true)
     private String email;
 
-    @NotBlank
+    @Column(nullable = false, length = 100, unique = true)
     private String usuario;
 
-    @NotBlank
-    @JsonIgnore
+    @Column(nullable = false, length = 255)
     private String senha;
 
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
+    private Permissao permissao;
 
-    @Column(name = "precisa_trocar_senha")
-    private Boolean precisaTrocarSenha;
+    @Column(nullable = false)
+    private Boolean status = false;
+
+    @Column(name = "precisa_trocar_senha", nullable = false)
+    private Boolean precisaTrocarSenha = true;
 
     @Column(name = "data_ultima_troca_senha")
     private LocalDateTime dataUltimaTrocaSenha;
 
-    @Column(name = "criado_em")
+    @CreationTimestamp
+    @Column(name = "criado_em", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
-
 }

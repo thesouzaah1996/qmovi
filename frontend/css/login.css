@@ -182,3 +182,131 @@ input:focus{
 }
 
 .ghost-icon.active{background:#000;color:#fff;}
+
+/* TOAST – mesmo estilo do almoxarifado, centralizado no topo */
+
+.toast-host{
+  position:fixed;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  display:grid;
+  gap:10px;
+  width:min(720px,92vw);
+  pointer-events:none;
+}
+
+.toast{
+  --toast-duration:7500ms;
+  position:relative;
+  pointer-events:auto;
+  background:#fff;
+  border:1px solid #fecaca;
+  box-shadow:0 12px 32px rgba(0,0,0,.14);
+  border-radius:14px;
+  padding:12px 80px 10px 14px;
+  overflow:hidden;
+}
+
+.toast.error{
+  border-left:6px solid #ef4444;
+}
+
+.toast.success{
+  border-left:6px solid #16a34a;
+  border-color:#bbf7d0;
+}
+
+.toast .title{
+  font-weight:800;
+  color:#991b1b;
+  margin:0 0 4px;
+}
+
+.toast.success .title{
+  color:#166534;
+}
+
+.toast .msg{
+  margin:0;
+  color:#1f2937;
+  line-height:1.35;
+  font-weight:500;
+}
+
+.toast .progress{
+  height:4px;
+  background:#fee2e2;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.toast.success .progress{
+  background:#dcfce7;
+}
+
+.toast .progress>i{
+  display:block;
+  height:100%;
+  background:#ef4444;
+  width:100%;
+  transform-origin:left;
+  transform:scaleX(1);
+  border-radius:inherit;
+  animation:none; /* controle pelo JS */
+}
+
+.toast.success .progress>i{
+  background:#16a34a;
+}
+
+@keyframes toastProgress{
+  from{transform:scaleX(1)}
+  to{transform:scaleX(0)}
+}
+
+.toast-controls{
+  position:absolute;
+  top:8px;
+  right:8px;
+  display:flex;
+  gap:6px;
+}
+
+.toast-controls button{
+  width:28px;
+  height:28px;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  border-radius:8px;
+  color:#9ca3af;
+  display:grid;
+  place-items:center;
+  transition:background .15s ease, transform .15s ease;
+}
+
+.toast-controls button:hover{
+  background:#f3f4f6;
+  color:#6b7280;
+}
+
+.toast-controls button:active{
+  transform:scale(.96);
+}
+
+.toast-controls button svg{
+  pointer-events:none;
+  transition:transform .2s ease;
+}
+
+.toast-controls button:hover svg{
+  transform:rotate(8deg);
+}
+
+.muted{
+  color:var(--muted);
+  font-size:12px;
+}
