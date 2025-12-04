@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/qmovi?sslmode=disable
+    url: jdbc:postgresql://localhost:5433/almoxarifado?sslmode=disable
     username: postgres
     password: 491273
     driver-class-name: org.postgresql.Driver

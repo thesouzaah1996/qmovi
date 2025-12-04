@@ -1,24 +1,121 @@
-2025-11-28T13:54:52.203-03:00  INFO 4228 --- [main] c.q.a.AlmoxarifadoApplication            : Starting AlmoxarifadoApplication using Java 24.0.1 with PID 4228 (C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado\target\classes started by mfsco in C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado)
-2025-11-28T13:54:52.212-03:00  INFO 4228 --- [main] c.q.a.AlmoxarifadoApplication            : No active profile set, falling back to 1 default profile: "default"
-2025-11-28T13:54:53.239-03:00  INFO 4228 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-28T13:54:53.325-03:00  INFO 4228 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 2 JPA repository interfaces.
-2025-11-28T13:54:54.032-03:00  INFO 4228 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2025-11-28T13:54:54.057-03:00  INFO 4228 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-28T13:54:54.058-03:00  INFO 4228 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
-2025-11-28T13:54:54.141-03:00  INFO 4228 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-11-28T13:54:54.141-03:00  INFO 4228 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1866 ms
-2025-11-28T13:54:54.463-03:00  INFO 4228 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-11-28T13:54:54.733-03:00  INFO 4228 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@569348e1
-2025-11-28T13:54:54.736-03:00  INFO 4228 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-11-28T13:54:54.780-03:00  INFO 4228 --- [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5433/qmovi?sslmode=disable (PostgreSQL 16.10)
-2025-11-28T13:54:54.919-03:00  INFO 4228 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.041s)
-2025-11-28T13:54:54.951-03:00  INFO 4228 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
-2025-11-28T13:54:54.959-03:00  INFO 4228 --- [main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
-2025-11-28T13:54:55.089-03:00  INFO 4228 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-11-28T13:54:55.179-03:00  INFO 4228 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
-2025-11-28T13:54:55.233-03:00  INFO 4228 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2025-11-28T13:54:55.542-03:00  INFO 4228 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-28T13:54:55.662-03:00  INFO 4228 --- [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2025-12-04T08:59:06.899-03:00  INFO 23420 --- [main] c.q.a.AlmoxarifadoApplication            : Starting AlmoxarifadoApplication using Java 24.0.1 with PID 23420 (C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado\target\classes started by mfsco in C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado)
+2025-12-04T08:59:06.908-03:00  INFO 23420 --- [main] c.q.a.AlmoxarifadoApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-12-04T08:59:07.858-03:00  INFO 23420 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-04T08:59:07.944-03:00  INFO 23420 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 2 JPA repository interfaces.
+2025-12-04T08:59:08.557-03:00  INFO 23420 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-04T08:59:08.572-03:00  INFO 23420 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-04T08:59:08.573-03:00  INFO 23420 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-04T08:59:08.636-03:00  INFO 23420 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-04T08:59:08.637-03:00  INFO 23420 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1655 ms
+2025-12-04T08:59:08.935-03:00  INFO 23420 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-04T08:59:10.024-03:00  WARN 23420 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Failed to initialize dependency 'flywayInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Unable to obtain connection from database: Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : 08001
+Error Code : 0
+Message    : Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+2025-12-04T08:59:10.028-03:00  INFO 23420 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-04T08:59:10.052-03:00  INFO 23420 --- [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-04T08:59:10.079-03:00 ERROR 23420 --- [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Failed to initialize dependency 'flywayInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Unable to obtain connection from database: Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : 08001
+Error Code : 0
+Message    : Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:328) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:973) ~[spring-context-6.2.12.jar:6.2.12]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.12.jar:6.2.12]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.7.jar:3.5.7]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.7.jar:3.5.7]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.7.jar:3.5.7]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.7.jar:3.5.7]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.7.jar:3.5.7]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.7.jar:3.5.7]
+	at com.qmovi.almoxarifado.AlmoxarifadoApplication.main(AlmoxarifadoApplication.java:10) ~[classes/:na]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'flywayInitializer' defined in class path resource [org/springframework/boot/autoconfigure/flyway/FlywayAutoConfiguration$FlywayConfiguration.class]: Unable to obtain connection from database: Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : 08001
+Error Code : 0
+Message    : Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315) ~[spring-beans-6.2.12.jar:6.2.12]
+	... 10 common frames omitted
+Caused by: org.flywaydb.core.internal.exception.sqlExceptions.FlywaySqlUnableToConnectToDbException: Unable to obtain connection from database: Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : 08001
+Error Code : 0
+Message    : Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+
+	at org.flywaydb.core.internal.jdbc.JdbcUtils.openConnection(JdbcUtils.java:70) ~[flyway-core-11.16.0.jar:na]
+	at org.flywaydb.core.internal.jdbc.JdbcConnectionFactory.<init>(JdbcConnectionFactory.java:76) ~[flyway-core-11.16.0.jar:na]
+	at org.flywaydb.core.FlywayExecutor.init(FlywayExecutor.java:273) ~[flyway-core-11.16.0.jar:na]
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:118) ~[flyway-core-11.16.0.jar:na]
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:187) ~[flyway-core-11.16.0.jar:na]
+	at org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer.afterPropertiesSet(FlywayMigrationInitializer.java:66) ~[spring-boot-autoconfigure-3.5.7.jar:3.5.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.12.jar:6.2.12]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.12.jar:6.2.12]
+	... 17 common frames omitted
+Caused by: org.postgresql.util.PSQLException: Connection to localhost:5433 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:373) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:279) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.8.jar:42.7.8]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.3.jar:na]
+	at org.flywaydb.core.internal.jdbc.JdbcUtils.openConnection(JdbcUtils.java:65) ~[flyway-core-11.16.0.jar:na]
+	... 24 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:628) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:533) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:282) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:665) ~[na:na]
+	at org.postgresql.core.PGStream.createSocket(PGStream.java:261) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.core.PGStream.<init>(PGStream.java:122) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:146) ~[postgresql-42.7.8.jar:42.7.8]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.8.jar:42.7.8]
+	... 36 common frames omitted
+
+2025-12-04T09:00:43.618-03:00  INFO 2740 --- [main] c.q.a.AlmoxarifadoApplication            : Starting AlmoxarifadoApplication using Java 24.0.1 with PID 2740 (C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado\target\classes started by mfsco in C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado)
+2025-12-04T09:00:43.622-03:00  INFO 2740 --- [main] c.q.a.AlmoxarifadoApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-12-04T09:00:44.534-03:00  INFO 2740 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-04T09:00:44.603-03:00  INFO 2740 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 2 JPA repository interfaces.
+2025-12-04T09:00:45.196-03:00  INFO 2740 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-04T09:00:45.215-03:00  INFO 2740 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-04T09:00:45.216-03:00  INFO 2740 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-04T09:00:45.287-03:00  INFO 2740 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-04T09:00:45.288-03:00  INFO 2740 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1607 ms
+2025-12-04T09:00:45.604-03:00  INFO 2740 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-04T09:00:45.860-03:00  INFO 2740 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@682618e5
+2025-12-04T09:00:45.862-03:00  INFO 2740 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-04T09:00:45.901-03:00  INFO 2740 --- [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5433/qmovi?sslmode=disable (PostgreSQL 16.10)
+2025-12-04T09:00:46.035-03:00  INFO 2740 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.035s)
+2025-12-04T09:00:46.071-03:00  INFO 2740 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
+2025-12-04T09:00:46.076-03:00  INFO 2740 --- [main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2025-12-04T09:00:46.181-03:00  INFO 2740 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-04T09:00:46.236-03:00  INFO 2740 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-12-04T09:00:46.274-03:00  INFO 2740 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-04T09:00:46.547-03:00  INFO 2740 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-04T09:00:46.642-03:00  INFO 2740 --- [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 16.10
@@ -26,26 +123,61 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-11-28T13:54:56.788-03:00  INFO 4228 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-11-28T13:54:56.935-03:00  INFO 4228 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-28T13:54:57.484-03:00  WARN 4228 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-28T13:54:57.713-03:00  WARN 4228 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
+2025-12-04T09:00:47.588-03:00  INFO 2740 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-04T09:00:47.689-03:00  INFO 2740 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-04T09:00:48.177-03:00  WARN 2740 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-04T09:00:48.381-03:00  WARN 2740 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 1393d780-f504-4d26-af6b-c6e874fc493d
+Using generated security password: b34cf7f3-1023-4ed5-a122-60966f0af03d
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2025-11-28T13:54:57.723-03:00  INFO 4228 --- [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2025-11-28T13:54:58.190-03:00  INFO 4228 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2025-11-28T13:54:58.201-03:00  INFO 4228 --- [main] c.q.a.AlmoxarifadoApplication            : Started AlmoxarifadoApplication in 6.73 seconds (process running for 7.175)
-2025-11-28T13:54:58.205-03:00  WARN 4228 --- [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
-2025-11-28T13:54:58.206-03:00  WARN 4228 --- [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
-2025-11-28T17:17:55.892-03:00  WARN 4228 --- [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h45m254ms584µs600ns).
-2025-11-28T19:31:33.549-03:00  WARN 4228 --- [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m35s873ms549µs).
-2025-11-28T20:07:28.228-03:00  WARN 4228 --- [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m24s284ms423µs400ns).
-2025-11-28T21:00:54.486-03:00  WARN 4228 --- [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=32m26s50ms769µs300ns).
-2025-11-28T22:39:50.818-03:00  INFO 4228 --- [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2025-11-28T22:39:50.955-03:00  INFO 4228 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2025-11-28T22:39:50.971-03:00  INFO 4228 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-11-28T22:39:50.987-03:00  INFO 4228 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-11-28T22:39:51.000-03:00  INFO 4228 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-04T09:00:48.389-03:00  INFO 2740 --- [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-12-04T09:00:48.818-03:00  INFO 2740 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-12-04T09:00:48.827-03:00  INFO 2740 --- [main] c.q.a.AlmoxarifadoApplication            : Started AlmoxarifadoApplication in 5.843 seconds (process running for 6.219)
+2025-12-04T09:00:48.832-03:00  WARN 2740 --- [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2025-12-04T09:00:48.832-03:00  WARN 2740 --- [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2025-12-04T09:25:11.132-03:00  WARN 2740 --- [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m55s210ms969µs200ns).
+2025-12-04T09:28:44.424-03:00  INFO 2740 --- [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-12-04T09:28:44.441-03:00  INFO 2740 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-12-04T09:28:44.447-03:00  INFO 2740 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-04T09:28:44.450-03:00  INFO 2740 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-04T09:28:44.456-03:00  INFO 2740 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-04T09:29:05.789-03:00  INFO 15248 --- [main] c.q.a.AlmoxarifadoApplication            : Starting AlmoxarifadoApplication using Java 24.0.1 with PID 15248 (C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado\target\classes started by mfsco in C:\Users\mfsco\Documents\Aratech Sistemas\Clientes\qmovi\almoxarifado\almoxarifado)
+2025-12-04T09:29:05.792-03:00  INFO 15248 --- [main] c.q.a.AlmoxarifadoApplication            : No active profile set, falling back to 1 default profile: "default"
+2025-12-04T09:29:06.671-03:00  INFO 15248 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-04T09:29:06.762-03:00  INFO 15248 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 79 ms. Found 2 JPA repository interfaces.
+2025-12-04T09:29:07.410-03:00  INFO 15248 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-04T09:29:07.425-03:00  INFO 15248 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-04T09:29:07.426-03:00  INFO 15248 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-04T09:29:07.501-03:00  INFO 15248 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-04T09:29:07.501-03:00  INFO 15248 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1650 ms
+2025-12-04T09:29:07.799-03:00  INFO 15248 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-04T09:29:07.992-03:00  INFO 15248 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3d1c933
+2025-12-04T09:29:07.993-03:00  INFO 15248 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-04T09:29:08.018-03:00  INFO 15248 --- [main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5433/qmovi?sslmode=disable (PostgreSQL 16.10)
+2025-12-04T09:29:08.101-03:00  INFO 15248 --- [main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.029s)
+2025-12-04T09:29:08.192-03:00  INFO 15248 --- [main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 2
+2025-12-04T09:29:08.197-03:00  INFO 15248 --- [main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2025-12-04T09:29:08.310-03:00  INFO 15248 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-04T09:29:08.364-03:00  INFO 15248 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.33.Final
+2025-12-04T09:29:08.404-03:00  INFO 15248 --- [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-04T09:29:08.667-03:00  INFO 15248 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-04T09:29:08.754-03:00  INFO 15248 --- [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.10
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-04T09:29:09.614-03:00  INFO 15248 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-04T09:29:09.660-03:00  INFO 15248 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-04T09:29:10.172-03:00  WARN 15248 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-04T09:29:10.743-03:00  INFO 15248 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-12-04T09:29:10.759-03:00  INFO 15248 --- [main] c.q.a.AlmoxarifadoApplication            : Started AlmoxarifadoApplication in 5.563 seconds (process running for 5.932)
+2025-12-04T09:29:10.763-03:00  WARN 15248 --- [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2025-12-04T09:29:10.764-03:00  WARN 15248 --- [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2025-12-04T09:29:29.174-03:00  INFO 15248 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-04T09:29:29.174-03:00  INFO 15248 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-04T09:29:29.175-03:00  INFO 15248 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

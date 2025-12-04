@@ -30,6 +30,8 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -167,66 +169,89 @@ public class ProdutoService {
         }
     }
 
-    @Transactional
-    public ProdutoResponse baixarEstoque(BaixaEstoqueRequest request) {
+@Transactional
+public ProdutoResponse baixarEstoque(BaixaEstoqueRequest request) {
 
-        try {
-            Produto produto = produtoRepository.findByIdProduto(request.idProduto())
-                    .orElseThrow(() ->
-                            new ResourceNotFoundException("Produto não encontrado com id de produto: " + request.idProduto())
-                    );
-
-            if (Boolean.FALSE.equals(request.autorizadoGestor())) {
-
-                registrarMovimentacao(
-                        produto,
-                        0,
-                        produto.getQuantidade(),
-                        produto.getQuantidade(),
-                        TipoMovimentacaoEstoque.SAIDA,
-                        false,
-                        request.conferente(),
-                        "Tentativa de baixa não autorizada pelo gestor"
+    try {
+        Produto produto = produtoRepository.findByIdProduto(request.idProduto())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Produto não encontrado com id de produto: " + request.idProduto()
+                        )
                 );
 
-                return mapper.toResponse(produto);
+        String conferenteNormalizado;
+
+        if (request.conferente() == null || request.conferente().trim().isEmpty()) {
+            // não veio conferente na requisição → mantém o que já está no produto
+            conferenteNormalizado = produto.getResponsavelRecebimento();
+
+            if (conferenteNormalizado == null || conferenteNormalizado.trim().isEmpty()) {
+                conferenteNormalizado = "Conferente não informado";
             }
+        } else {
+            conferenteNormalizado = request.conferente().trim();
+            produto.setResponsavelRecebimento(conferenteNormalizado);
+        }
 
-            if (request.quantidadeBaixa() <= 0) {
-                throw new BadRequestException("A quantidade a dar baixa deve ser maior que zero.");
-            }
+        if (request.quantidadeBaixa() == null || request.quantidadeBaixa() <= 0) {
+            throw new BadRequestException("A quantidade a dar baixa deve ser maior que zero.");
+        }
 
-            if (produto.getQuantidade() < request.quantidadeBaixa()) {
-                throw new BadRequestException(
-                        "Quantidade em estoque insuficiente para a baixa solicitada."
-                );
-            }
+        boolean autorizadoGestor = Boolean.TRUE.equals(request.autorizadoGestor());
 
-            int saldoAnterior = produto.getQuantidade();
-            int saldoAtual = saldoAnterior - request.quantidadeBaixa();
-            produto.setQuantidade(saldoAtual);
-
-            Produto salvo = produtoRepository.save(produto);
+        if (!autorizadoGestor) {
 
             registrarMovimentacao(
-                    salvo,
-                    request.quantidadeBaixa(),
-                    saldoAnterior,
-                    saldoAtual,
+                    produto,
+                    0,
+                    produto.getQuantidade(),
+                    produto.getQuantidade(),
                     TipoMovimentacaoEstoque.SAIDA,
-                    request.autorizadoGestor(),
-                    request.conferente(),
-                    "Baixa de estoque via módulo Almoxarifado"
+                    false,
+                    conferenteNormalizado,
+                    "Tentativa de baixa não autorizada pelo gestor"
             );
 
-            return mapper.toResponse(salvo);
-
-        } catch (BadRequestException | ResourceNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new BadRequestException("Erro interno ao baixar o estoque. Tente novamente ou contate o suporte.");
+            Produto semBaixa = produtoRepository.save(produto);
+            return mapper.toResponse(semBaixa);
         }
+
+        if (produto.getQuantidade() < request.quantidadeBaixa()) {
+            throw new BadRequestException(
+                    "Quantidade em estoque insuficiente para a baixa solicitada."
+            );
+        }
+
+        int saldoAnterior = produto.getQuantidade();
+        int saldoAtual = saldoAnterior - request.quantidadeBaixa();
+        produto.setQuantidade(saldoAtual);
+
+        Produto salvo = produtoRepository.save(produto);
+
+        registrarMovimentacao(
+                salvo,
+                request.quantidadeBaixa(),
+                saldoAnterior,
+                saldoAtual,
+                TipoMovimentacaoEstoque.SAIDA,
+                true,
+                conferenteNormalizado,
+                "Baixa de estoque via módulo Almoxarifado"
+        );
+
+        return mapper.toResponse(salvo);
+
+    } catch (BadRequestException | ResourceNotFoundException e) {
+        throw e;
+    } catch (Exception e) {
+        throw new BadRequestException(
+                "Erro interno ao baixar o estoque. Tente novamente ou contate o suporte."
+        );
     }
+}
+
+
 
 
     public List<ProdutoResponse> buscar(String termo) {

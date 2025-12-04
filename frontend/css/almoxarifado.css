@@ -96,18 +96,84 @@ select::-ms-expand{display:none}
 .modal.danger-mode .field{border-color:#ef4444 !important;box-shadow:0 0 0 4px rgba(239,68,68,.12) !important}
 .modal.danger-mode .field:focus-within{border-color:#dc2626 !important;box-shadow:0 0 0 4px rgba(220,38,38,.18) !important}
 
-.toast-host{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:1000;display:grid;gap:10px;width:min(720px,92vw);pointer-events:none}
+.toast-host{
+  position:fixed;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
+  display:grid;
+  gap:10px;
+  width:min(720px,92vw);
+  pointer-events:none;
+}
+
 .toast{
   --toast-duration:7500ms;
-  position:relative;pointer-events:auto;background:#fff;border:1px solid #fecaca;box-shadow:0 12px 32px rgba(0,0,0,.14);
-  border-radius:14px;padding:12px 80px 10px 14px;
-  overflow:hidden
+  position:relative;
+  pointer-events:auto;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  box-shadow:0 12px 32px rgba(0,0,0,.14);
+  border-radius:14px;
+  padding:12px 80px 10px 14px;
+  overflow:hidden;
 }
-.toast.error{border-left:6px solid #ef4444}
-.toast .title{font-weight:800;color:#991b1b;margin:0 0 4px}
-.toast .msg{margin:0;color:#1f2937;line-height:1.35;font-weight:500}
-.toast .progress{height:4px;background:#fee2e2;border-radius:999px;overflow:hidden;margin-top:10px}
-.toast .progress>i{display:block;height:100%;background:#ef4444;width:100%;transform-origin:left;animation:toastProgress var(--toast-duration) linear forwards;border-radius:inherit}
+
+/* ❌ ERRO = vermelho */
+.toast.error{
+  border-color:#fecaca;
+  border-left:6px solid #ef4444;
+}
+.toast.error .title{
+  color:#991b1b;
+}
+.toast.error .progress{
+  background:#fee2e2;
+}
+.toast.error .progress>i{
+  background:#ef4444;
+}
+
+/* ✅ SUCESSO = verde */
+.toast.success{
+  border-color:#bbf7d0;
+  border-left:6px solid #22c55e;
+}
+.toast.success .title{
+  color:#166534;
+}
+.toast.success .progress{
+  background:#dcfce7;
+}
+.toast.success .progress>i{
+  background:#22c55e;
+}
+
+.toast .title{
+  font-weight:800;
+  margin:0 0 4px;
+}
+.toast .msg{
+  margin:0;
+  color:#1f2937;
+  line-height:1.35;
+  font-weight:500;
+}
+.toast .progress{
+  height:4px;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.toast .progress>i{
+  display:block;
+  height:100%;
+  width:100%;
+  transform-origin:left;
+  animation:toastProgress var(--toast-duration) linear forwards;
+  border-radius:inherit;
+}
 
 @keyframes toastProgress{
   from{transform:scaleX(1)}
