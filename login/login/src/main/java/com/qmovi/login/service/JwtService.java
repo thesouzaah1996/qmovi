@@ -54,7 +54,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public void validarAcessToken(String token) {
+    public void validarTokenDeAcesso(String token) {
         var tokenDeAcesso = extrairToken(token);
         try {
             Jwts
@@ -69,7 +69,7 @@ public class JwtService {
     }
 
     private String extrairToken(String token) {
-        if (StringUtils.hasText(token)) {
+        if (!StringUtils.hasText(token)) {
             throw new TokenInvalidoException("O token de acesso não foi informado.");
         }
         if (token.contains(ESPACO_VAZIO)) {

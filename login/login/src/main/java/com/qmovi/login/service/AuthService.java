@@ -36,12 +36,12 @@ public class AuthService {
 
     public TokenDTO validarToken(String tokenDeAcesso) {
         validarTokenExistente(tokenDeAcesso);
-        jwtService.validarAcessToken(tokenDeAcesso);
+        jwtService.validarTokenDeAcesso(tokenDeAcesso);
         return new TokenDTO(tokenDeAcesso);
     }
 
     private void validarTokenExistente(String tokenDeAcesso) {
-        if (StringUtils.hasText(tokenDeAcesso)) {
+        if (!StringUtils.hasText(tokenDeAcesso)) {
             throw new ValidationException("O token de acesso deve ser informado.");
         }
     }
