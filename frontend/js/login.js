@@ -19,7 +19,6 @@
   const form = document.getElementById('loginForm');
   if (!form) return;
 
-  // some completamente com a mensagem de baixo
   const feedback = document.getElementById('feedback');
   if (feedback) {
     feedback.textContent = '';
@@ -40,26 +39,22 @@
     const toast = document.createElement('div');
     toast.className = 'toast ' + (variant === 'success' ? 'success' : 'error');
 
-    // título
     const titleEl = document.createElement('p');
     titleEl.className = 'title';
     titleEl.textContent = title;
 
-    // mensagem
     const msgEl = document.createElement('p');
     msgEl.className = 'msg';
     msgEl.textContent = message;
 
-    // progress bar (igual seu CSS: .progress > i)
     const progress = document.createElement('div');
     progress.className = 'progress';
     const bar = document.createElement('i');
     bar.style.transformOrigin = 'left';
     bar.style.transform = 'scaleX(1)';
-    bar.style.animation = 'none'; // ignora animação CSS, vamos controlar via JS
+    bar.style.animation = 'none';
     progress.appendChild(bar);
 
-    // controles (pause + fechar)
     const controls = document.createElement('div');
     controls.className = 'toast-controls';
 
@@ -81,7 +76,6 @@
 
     toastHost.appendChild(toast);
 
-    // ===== lógica da barra com pause =====
     let total = duration;
     let remaining = total;
     let start = performance.now();
@@ -154,18 +148,26 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: usuario.value.trim(),
-          password: senhaInput.value
+          usuario: usuario.value.trim(),
+          senha: senhaInput.value
         }),
         credentials: 'include'
       });
 
       if (response.ok) {
+        // const data = await response.json();
+        // localStorage.setItem('tokenDeAcesso', data.tokenDeAcesso);
+
         showToast({
           title: 'Login realizado',
           message: 'Login realizado com sucesso.',
           variant: 'success'
         });
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+
         return;
       }
 

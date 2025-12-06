@@ -24,3 +24,7 @@ spring:
 
 server:
   port: 8081
+
+app:
+  token:
+    secret-key: ${JWT_SECRET_KEY:QXJhdGVjaC1TaXN0ZW1hcy1RTW92aS1Mb2dpbg==}

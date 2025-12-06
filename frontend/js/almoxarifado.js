@@ -1,5 +1,3 @@
-// js/almoxarifado.js
-
 /* ========= CONFIG API ========= */
 const API_HOST = 'http://localhost:8080';
 
@@ -36,7 +34,7 @@ const API = {
 const state = {
   produtos: [],
   page: 1,
-  pageSize: 8 // <= 8 produtos por página
+  pageSize: 8
 };
 
 /* ========= HELPERS GERAIS ========= */
@@ -127,14 +125,17 @@ function renderGrid() {
     const tdAcoes = document.createElement('td');
     tdAcoes.classList.add('row-actions');
 
-    const btnEditar = criarBotaoLinha('Editar', 'secondary', () => abrirModalProduto(p));
-    const btnExcluir = criarBotaoLinha('Excluir', 'danger', () => abrirModalDelete(idProduto, p.nome));
+    const btnEditar = criarBotaoLinha('Editar', 'secondary', () =>
+      abrirModalProduto(p)
+    );
+    const btnExcluir = criarBotaoLinha('Excluir', 'danger', () =>
+      abrirModalDelete(idProduto, p.nome)
+    );
 
     tdAcoes.appendChild(btnEditar);
     tdAcoes.appendChild(btnExcluir);
 
     tr.appendChild(tdAcoes);
-
     tbody.appendChild(tr);
   });
 
@@ -180,7 +181,7 @@ function renderPager(total) {
   pager.appendChild(makeBtn('»', totalPages, state.page === totalPages, false));
 }
 
-/* ========= AVATAR / MENU DE USUÁRIO ========= */
+/* ========= AVATAR ========= */
 
 function initUserMenu() {
   const btn = document.getElementById('avatarBtn');
@@ -215,6 +216,7 @@ function initUserMenu() {
   menu.addEventListener('click', (e) => {
     const item = e.target.closest('[data-action]');
     if (!item) return;
+
     const action = item.getAttribute('data-action');
     if (action === 'logout') {
       showToast({
@@ -229,6 +231,7 @@ function initUserMenu() {
         variant: 'error'
       });
     }
+
     menu.classList.remove('open');
     btn.setAttribute('aria-expanded', 'false');
   });
@@ -238,23 +241,17 @@ function initUserMenu() {
 
 function safeShowDialog(dialog) {
   if (!dialog) return;
-  if (typeof dialog.showModal === 'function') {
-    dialog.showModal();
-  } else {
-    dialog.setAttribute('open', 'open');
-  }
+  if (typeof dialog.showModal === 'function') dialog.showModal();
+  else dialog.setAttribute('open', 'open');
 }
 
 function safeCloseDialog(dialog) {
   if (!dialog) return;
-  if (typeof dialog.close === 'function') {
-    dialog.close();
-  } else {
-    dialog.removeAttribute('open');
-  }
+  if (typeof dialog.close === 'function') dialog.close();
+  else dialog.removeAttribute('open');
 }
 
-/* --- modal produto (criar/editar) --- */
+/* ========= MODAL PRODUTO ========= */
 
 function resetModalProduto() {
   document.getElementById('productId').value = '';
@@ -265,6 +262,7 @@ function resetModalProduto() {
   document.getElementById('stock').value = '';
   document.getElementById('location').value = '';
   document.getElementById('checker').value = '';
+
   const titulo = document.getElementById('produtoTitulo');
   if (titulo) titulo.textContent = 'Novo Produto';
 }
@@ -278,8 +276,7 @@ function preencherModalProduto(produto) {
 
   document.getElementById('name').value = produto.nome ?? '';
 
-  document.getElementById('sector').value =
-    produto.setor ?? '';
+  document.getElementById('sector').value = produto.setor ?? '';
 
   document.getElementById('unit').value =
     produto.unidade ?? produto.unidadeMedida ?? '';
@@ -319,13 +316,14 @@ function initModalProduto() {
   const modal = document.getElementById('modalProduto');
   const form = document.getElementById('formProduto');
   const btnNew = document.getElementById('btnNew');
+
   if (!modal || !form || !btnNew) return;
 
   btnNew.addEventListener('click', () => abrirModalProduto(null));
 
-  modal.querySelectorAll('[data-cancel]').forEach(btn => {
-    btn.addEventListener('click', () => safeCloseDialog(modal));
-  });
+  modal.querySelectorAll('[data-cancel]').forEach(btn =>
+    btn.addEventListener('click', () => safeCloseDialog(modal))
+  );
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -353,15 +351,12 @@ function initModalProduto() {
 
       const resp = await apiJson(url, method, body);
 
-      if (!resp.ok) {
-        throw new Error(`Erro ao salvar produto. Status: ${resp.status}`);
-      }
+      if (!resp.ok) throw new Error(`Erro ao salvar produto. Status: ${resp.status}`);
 
       const saved = await resp.json();
       const savedId = saved.idProduto ?? saved.id ?? saved.codigo ?? body.id;
 
       if (mode === 'create') {
-        // novo: vai pro topo
         state.produtos.unshift(saved);
         state.page = 1;
         showToast({
@@ -370,19 +365,13 @@ function initModalProduto() {
           variant: 'success'
         });
       } else {
-        // edição: mantém posição
         const chaveBusca = idProdutoRef || savedId;
         const idx = state.produtos.findIndex(p => {
           const pid = p.idProduto ?? p.id ?? p.codigo;
           return pid === chaveBusca;
         });
 
-        if (idx !== -1) {
-          state.produtos[idx] = saved;
-        } else {
-          // fallback se não achar (não deve acontecer)
-          state.produtos.push(saved);
-        }
+        if (idx !== -1) state.produtos[idx] = saved;
 
         showToast({
           title: 'Produto editado',
@@ -393,23 +382,22 @@ function initModalProduto() {
 
       safeCloseDialog(modal);
       renderGrid();
+
     } catch (err) {
       console.error(err);
 
-      const errorMessage = mode === 'edit'
-        ? 'Não foi possível editar o produto no momento.'
-        : 'Não foi possível criar o produto no momento.';
-
       showToast({
         title: 'Erro ao salvar',
-        message: errorMessage,
+        message: mode === 'edit'
+          ? 'Não foi possível editar o produto.'
+          : 'Não foi possível criar o produto.',
         variant: 'error'
       });
     }
   });
 }
 
-/* --- modal baixa de estoque --- */
+/* ========= MODAL BAIXA (ALTERAÇÃO APLICADA AQUI) ========= */
 
 function initModalBaixa() {
   const modal = document.getElementById('modalBaixa');
@@ -423,9 +411,9 @@ function initModalBaixa() {
     safeShowDialog(modal);
   });
 
-  modal.querySelectorAll('[data-cancel]').forEach(btn => {
-    btn.addEventListener('click', () => safeCloseDialog(modal));
-  });
+  modal.querySelectorAll('[data-cancel]').forEach(btn =>
+    btn.addEventListener('click', () => safeCloseDialog(modal))
+  );
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -447,36 +435,49 @@ function initModalBaixa() {
     const body = {
       id: idProduto,
       quantidade_baixa: quantidade,
-      autorizado_gestor: autGestor === 'SIM', 
-      conferente: conferente  
+      autorizado_gestor: autGestor === 'SIM',
+      conferente
     };
 
     try {
       const resp = await apiJson(API.baixaUrl(), 'POST', body);
-      if (!resp.ok) {
-        throw new Error(`Erro ao dar baixa. Status: ${resp.status}`);
+      if (!resp.ok) throw new Error(`Erro ao dar baixa. Status: ${resp.status}`);
+
+      // 🟢 NOVO: atualiza SOMENTE o item na posição correta
+      const updated = await resp.json();
+      const updatedId = updated.idProduto ?? updated.id ?? updated.codigo;
+
+      const idx = state.produtos.findIndex(p => {
+        const pid = p.idProduto ?? p.id ?? p.codigo;
+        return pid === updatedId;
+      });
+
+      if (idx !== -1) {
+        state.produtos[idx] = updated;
       }
 
       showToast({
-        title: 'Baixa de estoque',
+        title: 'Baixa realizada',
         message: 'Baixa de estoque realizada com sucesso.',
         variant: 'success'
       });
 
       safeCloseDialog(modal);
-      await carregarProdutos();
+      renderGrid(); // apenas re-renderiza, sem perder ordem
+
     } catch (err) {
       console.error(err);
+
       showToast({
         title: 'Erro na baixa',
-        message: 'Não foi possível realizar a baixa de estoque no momento.',
+        message: 'Não foi possível realizar a baixa de estoque.',
         variant: 'error'
       });
     }
   });
 }
 
-/* --- modal delete --- */
+/* ========= MODAL DELETE ========= */
 
 function abrirModalDelete(idProduto, nome) {
   const modal = document.getElementById('modalDelete');
@@ -496,9 +497,9 @@ function initModalDelete() {
   const form = document.getElementById('formDelete');
   if (!modal || !form) return;
 
-  modal.querySelectorAll('[data-cancel]').forEach(btn => {
-    btn.addEventListener('click', () => safeCloseDialog(modal));
-  });
+  modal.querySelectorAll('[data-cancel]').forEach(btn =>
+    btn.addEventListener('click', () => safeCloseDialog(modal))
+  );
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -511,9 +512,12 @@ function initModalDelete() {
 
     try {
       const resp = await apiJson(API.deleteUrl(idProduto), 'DELETE');
-      if (!resp.ok) {
-        throw new Error(`Erro ao excluir. Status: ${resp.status}`);
-      }
+      if (!resp.ok) throw new Error(`Erro ao excluir. Status: ${resp.status}`);
+
+      state.produtos = state.produtos.filter(p => {
+        const pid = p.idProduto ?? p.id ?? p.codigo;
+        return pid !== idProduto;
+      });
 
       showToast({
         title: 'Excluído',
@@ -522,12 +526,13 @@ function initModalDelete() {
       });
 
       safeCloseDialog(modal);
-      await carregarProdutos();
+      renderGrid();
+
     } catch (err) {
       console.error(err);
       showToast({
         title: 'Erro ao excluir',
-        message: 'Não foi possível excluir o produto no momento.',
+        message: 'Não foi possível excluir o produto.',
         variant: 'error'
       });
     }
@@ -554,18 +559,18 @@ function initBusca() {
 
       try {
         const resp = await apiGet(API.buscarUrl(termo));
-        if (!resp.ok) {
-          throw new Error(`Erro ao buscar. Status: ${resp.status}`);
-        }
+        if (!resp.ok) throw new Error(`Erro ao buscar. Status: ${resp.status}`);
+
         const data = await resp.json();
         state.produtos = Array.isArray(data) ? data : [];
         state.page = 1;
         renderGrid();
+
       } catch (err) {
         console.error(err);
         showToast({
           title: 'Erro na busca',
-          message: 'Não foi possível buscar esse produto.',
+          message: 'Não foi possível buscar o produto. Atualmente, a busca é feita pelo ID do produto, ou pelo seu nome. Verifique também se não existem erros ortográficos em sua busca.',
           variant: 'error'
         });
       }
@@ -573,7 +578,7 @@ function initBusca() {
   });
 }
 
-/* ========= EXPORTAR CSV / RELATÓRIO ========= */
+/* ========= EXPORTAR ========= */
 
 function exportarCSV() {
   window.open(API.exportCsvUrl(), '_blank');
@@ -583,15 +588,13 @@ function imprimirRelatorioPdf() {
   window.open(API.relatorioPdfUrl(), '_blank');
 }
 
-/* ========= HELPERS DE FETCH ========= */
+/* ========= FETCH HELPERS ========= */
 
 async function apiGet(url) {
   return fetch(url, {
     method: 'GET',
     credentials: 'include',
-    headers: {
-      'Accept': 'application/json'
-    }
+    headers: { 'Accept': 'application/json' }
   });
 }
 
@@ -612,20 +615,20 @@ async function apiJson(url, method, body) {
 async function carregarProdutos() {
   try {
     const resp = await apiGet(API.listUrl());
-    if (!resp.ok) {
-      throw new Error(`Erro ao listar produtos. Status: ${resp.status}`);
-    }
+    if (!resp.ok) throw new Error(`Erro ao listar produtos. Status: ${resp.status}`);
+
     const data = await resp.json();
     state.produtos = Array.isArray(data) ? data : [];
     state.page = 1;
     renderGrid();
+
   } catch (err) {
     console.error(err);
     state.produtos = [];
     renderGrid();
     showToast({
       title: 'Erro ao carregar',
-      message: 'Não foi possível carregar a lista de produtos.',
+      message: 'Não foi possível carregar produtos.',
       variant: 'error'
     });
   }
