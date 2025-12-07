@@ -1,11 +1,9 @@
 spring:
   application:
     name: login
-  profiles:
-    active: producao
 
   datasource:
-    url: jdbc:postgresql://localhost:5434/login
+    url: jdbc:postgresql://localhost:5432/login_dev
     username: postgres
     password: 491273
     driver-class-name: org.postgresql.Driver

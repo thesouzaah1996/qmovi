@@ -1,20 +1,18 @@
 spring:
   application:
     name: login
-  profiles:
-    active: producao
 
   datasource:
-    url: jdbc:postgresql://localhost:5434/login
-    username: postgres
-    password: 491273
+    url: ${DATASOURCE_URL_PRODUCAO:jdbc:postgresql://localhost:5434/login}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:491273}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -30,3 +28,10 @@ server:
 app:
   token:
     secret-key: ${JWT_SECRET_KEY:QXJhdGVjaC1TaXN0ZW1hcy1RTW92aS1Mb2dpbg==}
+
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
