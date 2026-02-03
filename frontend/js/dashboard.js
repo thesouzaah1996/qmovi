@@ -1,12 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
-  // Ícones
   if (window.lucide && lucide.createIcons) lucide.createIcons();
-
-  // Ano auto
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
-  // Dropdown do usuário
   const btn = document.getElementById('userBtn');
   const menu = document.getElementById('userMenu');
 
