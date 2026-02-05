@@ -173,7 +173,6 @@ input:focus{
   text-shadow:0 1px 2px rgba(0,0,0,.25);
 }
 
-/* util */
 .sr-only{
   position:absolute !important;
   height:1px; width:1px;
@@ -182,8 +181,6 @@ input:focus{
 }
 
 .ghost-icon.active{background:#000;color:#fff;}
-
-/* TOAST – mesmo estilo do almoxarifado, centralizado no topo */
 
 .toast-host{
   position:fixed;
@@ -255,7 +252,7 @@ input:focus{
   transform-origin:left;
   transform:scaleX(1);
   border-radius:inherit;
-  animation:none; /* controle pelo JS */
+  animation:none;
 }
 
 .toast.success .progress>i{
