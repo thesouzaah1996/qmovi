@@ -1,5 +1,3 @@
-// js/api.js
-
 const API_HOST = 'http://localhost:8080';
 
 const API = {
