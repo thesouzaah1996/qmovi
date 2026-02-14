@@ -17,13 +17,11 @@
 <body>
   <div id="toastHost" class="toast-host" aria-live="assertive" aria-atomic="true"></div>
 
-  <!-- Topbar igual -->
   <header class="topbar" aria-label="Barra superior">
     <a class="brand" href="dashboard.html" aria-label="Início Qmovi">
       <img class="logo" src="img/qLaranjaMoviAzul.png" alt="Qmovi" />
     </a>
 
-    <!-- Menu do usuário -->
     <div class="user-menu">
       <button id="avatarBtn" class="avatar-btn" aria-haspopup="menu" aria-controls="userMenu" aria-expanded="false">
         <span class="avatar-circle" aria-hidden="true">
@@ -70,7 +68,6 @@
       <strong>Portaria</strong>
     </nav>
 
-    <!-- Abas -->
     <div class="tabs">
       <button class="tab is-active" data-tab="entradas">
         <i data-lucide="file-text"></i><span>Entrada de Notas</span>
@@ -80,7 +77,6 @@
       </button>
     </div>
 
-    <!-- Toolbar da aba ativa -->
     <section class="toolbar" aria-label="Ferramentas">
       <div class="filters">
         <label class="field" style="flex:1;min-width:260px">
@@ -97,7 +93,6 @@
       </div>
     </section>
 
-    <!-- Conteúdo: Entradas -->
     <section class="card tab-panel" id="panel-entradas">
       <header class="card-head">
         <h2>Entradas registradas</h2>
@@ -127,7 +122,6 @@
       </footer>
     </section>
 
-    <!-- Conteúdo: Fila -->
     <section class="card tab-panel is-hidden" id="panel-fila">
       <header class="card-head">
         <h2>Fila de Espera (Docas)</h2>
@@ -156,12 +150,10 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     © <span id="year"></span> Qmovi — Todos os direitos reservados.
   </footer>
 
-  <!-- Modal: Nova Entrada de Nota -->
   <dialog id="dlgEntrada" class="modal" aria-labelledby="tituloEntrada">
     <form id="formEntrada" method="dialog">
       <header><h3 id="tituloEntrada">Registrar Entrada de Nota</h3></header>
@@ -196,7 +188,6 @@
     </form>
   </dialog>
 
-  <!-- Modal: Inserir na Fila -->
   <dialog id="dlgFila" class="modal" aria-labelledby="tituloFila">
     <form id="formFila" method="dialog">
       <header><h3 id="tituloFila">Adicionar Veículo à Fila</h3></header>
