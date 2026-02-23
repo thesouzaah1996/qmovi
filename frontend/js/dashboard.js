@@ -39,7 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
   //   });
   // });
 
-  // Logout simulado
   document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
     e.preventDefault();
     alert('Encerrar sessão e voltar para o login');
